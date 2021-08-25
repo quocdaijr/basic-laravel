@@ -1,0 +1,29 @@
+{
+    "name": "quocdaijr/category",
+    "description": "",
+    "authors": [
+        {
+            "name": "quocdaijr",
+            "email": "quocdaijr@gmail.com"
+        }
+    ],
+    "require": {
+        "quocdaijr/core": "*@dev",
+        "quocdaijr/administration": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Category\\Providers\\CategoryServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Category\\": ""
+        }
+    }
+}

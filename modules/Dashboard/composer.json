@@ -1,0 +1,27 @@
+{
+    "name": "quocdaijr/dashboard",
+    "description": "",
+    "authors": [
+        {
+            "name": "quocdaijr",
+            "email": "quocdaijr@gmail.com"
+        }
+    ],
+    "require": {
+        "quocdaijr/core": "*@dev",
+        "quocdaijr/administration": "*@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Dashboard\\": ""
+        }
+    }
+}

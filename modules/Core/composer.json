@@ -1,0 +1,30 @@
+{
+    "name": "quocdaijr/core",
+    "description": "",
+    "authors": [
+        {
+            "name": "quocdaijr",
+            "email": "quocdaijr@gmail.com"
+        }
+    ],
+    "require": {
+        "diglactic/laravel-breadcrumbs": "^7.0.0",
+        "maatwebsite/laravel-sidebar": "~2.3",
+        "realrashid/sweet-alert": "^4.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Core\\Providers\\CoreServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Core\\": ""
+        }
+    }
+}

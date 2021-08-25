@@ -1,0 +1,19 @@
+{
+    "/modules/administration/js/administration.js": "/modules/administration/js/administration.js",
+    "/modules/category/js/category.js": "/modules/category/js/category.js",
+    "/modules/core/js/core.js": "/modules/core/js/core.js",
+    "/modules/core/js/bootstrap.js": "/modules/core/js/bootstrap.js",
+    "/modules/core/js/init.js": "/modules/core/js/init.js",
+    "/modules/core/js/sweetalert.js": "/modules/core/js/sweetalert.js",
+    "/modules/dashboard/js/dashboard.js": "/modules/dashboard/js/dashboard.js",
+    "/modules/post/js/post.js": "/modules/post/js/post.js",
+    "/modules/post/css/post.css": "/modules/post/css/post.css",
+    "/modules/dashboard/css/dashboard.css": "/modules/dashboard/css/dashboard.css",
+    "/modules/core/css/sweetalert-theme.css": "/modules/core/css/sweetalert-theme.css",
+    "/modules/category/css/category.css": "/modules/category/css/category.css",
+    "/modules/administration/css/administration.css": "/modules/administration/css/administration.css",
+    "/modules/core/css/core.css": "/modules/core/css/core.css",
+    "/modules/administration/images/login-office-dark.jpeg": "/modules/administration/images/login-office-dark.jpeg",
+    "/modules/administration/images/login-office.jpeg": "/modules/administration/images/login-office.jpeg",
+    "/modules/core/images/favicon.ico": "/modules/core/images/favicon.ico"
+}

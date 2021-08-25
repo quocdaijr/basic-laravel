@@ -1,0 +1,27 @@
+{
+    "name": "quocdaijr/administration",
+    "description": "",
+    "authors": [
+        {
+            "name": "quocdaijr",
+            "email": "quocdaijr@gmail.com"
+        }
+    ],
+    "require": {
+        "quocdaijr/core": "*@dev",
+        "spatie/laravel-permission": "^4.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Administration\\": ""
+        }
+    }
+}

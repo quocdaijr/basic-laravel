@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+/*
+Custom class
+*/
+.h-auto-important {
+    height: auto !important;
+}
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
