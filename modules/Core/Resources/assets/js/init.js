@@ -213,3 +213,17 @@ window.alertConfirm = function (form_id,
     })
 }
 
+window.ajaxUpload = async function (file, type = '') {
+    let formData = new FormData();
+    formData.append("upload", file);
+    // try {
+        return await axios.post('/file/create?type=' + type, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+    // } catch (err) {
+    //     console.error(err);
+    // }
+
+}

@@ -15,6 +15,8 @@ class CreatePostHasCategoriesTable extends Migration
     {
         Schema::create('post_has_categories', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('post_id')->unsigned()->references('id')->on('posts')->onDelete('cascade');
+            $table->bigInteger('category_id')->unsigned()->references('id')->on('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

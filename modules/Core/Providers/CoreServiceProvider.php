@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Providers;
 
-use Blade;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\ResourceRegistrar;
@@ -45,6 +45,7 @@ class CoreServiceProvider extends ServiceProvider
             return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
         });
         Paginator::defaultView('core::partials.pagination');
+        Blade::componentNamespace('Modules\\Core\\Views\\Forms\\Fields', 'field');
     }
 
     /**

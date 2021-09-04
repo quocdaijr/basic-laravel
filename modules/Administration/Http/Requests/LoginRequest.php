@@ -35,7 +35,7 @@ class LoginRequest extends CoreRequest
             'password' => $this->post('password'),
         ];
 
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+        if (!Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

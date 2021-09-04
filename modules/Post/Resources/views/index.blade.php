@@ -46,7 +46,7 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-xs">
-                                    {!! \Modules\Core\Constants\CoreConstant::getHtmlStatus($post->status) !!}
+                                    {!! Modules\Post\Constants\PostConstant::getHtmlStatus($post->status) !!}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <div class="flex items-center text-sm">

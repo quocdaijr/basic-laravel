@@ -2,7 +2,6 @@
 
 namespace Modules\Core\Listeners;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Sidebar\SidebarExtender;
 use Modules\Core\Events\BuildSidebarEvent;
@@ -26,7 +25,7 @@ abstract class BuildSidebarListener implements SidebarExtender
     }
 
     protected function checkAccess($permissions = []){
-        if (Auth::user() !== null && Auth::user()->hasAnyPermission($permissions))
+        if ($this->auth !== null && (isAdmin() || $this->auth->hasAnyPermission($permissions)))
             return true;
         return false;
     }

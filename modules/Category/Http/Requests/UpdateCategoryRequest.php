@@ -4,19 +4,16 @@ namespace Modules\Category\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Modules\Core\Http\Requests\CoreRequest;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateCategoryRequest extends CoreRequest
 {
-    public function authorize() {
-        return true;
-    }
 
     public function rules() {
-        $id = $this->route()->parameter('id');
         return [
-            'name' => 'required|max:255|unique:categories,name,' . $id,
+            'name' => 'required|max:255|unique:categories,name,' . $this->id,
             'status' => 'required',
-            'slug' => 'required',
+            'slug' => 'required|max:255|unique:categories,slug,' . $this->id,
         ];
     }
 }

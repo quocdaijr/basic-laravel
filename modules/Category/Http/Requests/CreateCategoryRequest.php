@@ -2,15 +2,10 @@
 
 namespace Modules\Category\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Modules\Core\Http\Requests\CoreRequest;
 
-class CreateCategoryRequest extends FormRequest
+class CreateCategoryRequest extends CoreRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
-
     public function rules()
     {
         return [

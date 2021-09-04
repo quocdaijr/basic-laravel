@@ -9,7 +9,8 @@
     ],
     "require": {
         "quocdaijr/core": "*@dev",
-        "quocdaijr/administration": "*@dev"
+        "quocdaijr/administration": "*@dev",
+        "quocdaijr/file": "*@dev"
     },
     "extra": {
         "laravel": {

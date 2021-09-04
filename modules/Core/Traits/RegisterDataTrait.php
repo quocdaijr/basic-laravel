@@ -2,6 +2,8 @@
 
 namespace Modules\Core\Traits;
 
+use Modules\Core\Constants\CoreConstant;
+
 trait RegisterDataTrait
 {
     public function registerMultiConfig($conf_file_names): self
@@ -11,10 +13,10 @@ trait RegisterDataTrait
         }
         foreach ($conf_file_names as $conf_file_name) {
             $this->publishes([
-                module_path($this->moduleName, 'Config/' . $conf_file_name . '.php') => config_path($this->moduleNameLower . '/' . $conf_file_name . '.php'),
+                module_path($this->moduleName, 'Config/' . $conf_file_name . '.php') => config_path(CoreConstant::MODULE_NAME . '/' . $this->moduleNameLower . '/' . $conf_file_name . '.php'),
             ], 'config');
             $this->mergeConfigFrom(
-                module_path($this->moduleName, 'Config/' . $conf_file_name . '.php'), $this->moduleNameLower . '.' . $conf_file_name
+                module_path($this->moduleName, 'Config/' . $conf_file_name . '.php'), CoreConstant::MODULE_NAME . '.' . $this->moduleNameLower . '.' . $conf_file_name
             );
         }
         return $this;

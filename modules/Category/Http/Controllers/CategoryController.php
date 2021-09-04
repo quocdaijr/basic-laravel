@@ -2,7 +2,10 @@
 
 namespace Modules\Category\Http\Controllers;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Modules\Category\Http\Requests\CreateCategoryRequest;
 use Modules\Category\Http\Requests\UpdateCategoryRequest;
@@ -24,7 +27,7 @@ class CategoryController extends CoreController
      */
     public function index()
     {
-        $categories = $this->categoryRepository->pagination(2);
+        $categories = $this->categoryRepository->pagination(20);
         return view('category::index', compact('categories'));
     }
 
@@ -51,45 +54,53 @@ class CategoryController extends CoreController
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
     public function show($id)
     {
-        $category = $this->categoryRepository->one($id);
-        return view('category::show', compact('category'));
+        if ($category = $this->categoryRepository->find($id))
+            return view('category::show', compact('category'));
+        abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
     public function edit($id)
     {
-        $category = $this->categoryRepository->one($id);
-        return view('category::edit', compact('category'));
+        if ($category = $this->categoryRepository->find($id))
+            return view('category::edit', compact('category'));
+        abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      * @param UpdateCategoryRequest $request
      * @param int $id
-     * @return RedirectResponse
+     * @return void
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
-        $this->categoryRepository->update($id, $request->all());
-        return redirect()->route('category.index')->withToastSuccess('Update success');
+        if ($this->categoryRepository->find($id)) {
+            $this->categoryRepository->update($id, $request->all());
+            return redirect()->route('category.index')->withToastSuccess('Update success');
+        }
+        abort(404);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return RedirectResponse
+     * @return void
      */
     public function destroy($id)
     {
-        $this->categoryRepository->delete($id);
-        return redirect()->route('category.index')->withToastSuccess('Delete success');
+        if ($this->categoryRepository->find($id)) {
+            $this->categoryRepository->delete($id);
+            return redirect()->route('category.index')->withToastSuccess('Delete success');
+        }
+        abort(404);
     }
 }

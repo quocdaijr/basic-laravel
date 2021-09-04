@@ -16,7 +16,15 @@ interface RepositoryInterface
 
     public function all();
 
-    public function one($id);
+    public function find(int $id);
+
+    public function findByAttributes(array $attributes);
+
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc');
+
+    public function buildQuery($attributes);
+
+    public function search($attributes, $limit = null);
 
     public function create(array $attributes);
 

@@ -4,13 +4,12 @@ namespace Modules\Administration\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
 use Modules\Administration\Entities\GroupPermission;
 use Modules\Administration\Entities\Permission;
 use Modules\Administration\Entities\Role;
 use Modules\Administration\Entities\User;
-use Modules\Administration\Http\Middleware\AuthenticateMiddleware;
-use Modules\Administration\Http\Middleware\SignInMiddleware;
+use Modules\Administration\Http\Middleware\Authenticate;
+use Modules\Administration\Http\Middleware\RedirectIfAuthenticated;
 use Modules\Administration\Listeners\BuildAdministrationSidebarListener;
 use Modules\Administration\Repositories\Eloquent\GroupPermissionRepository;
 use Modules\Administration\Repositories\Eloquent\PermissionRepository;
@@ -62,8 +61,8 @@ class AdministrationServiceProvider extends ServiceProvider
          * @var Router $router
          */
         $router = $this->app['router'];
-        $router->aliasMiddleware('auth', AuthenticateMiddleware::class);
-        $router->aliasMiddleware('guest', SignInMiddleware::class);
+        $router->aliasMiddleware('auth', Authenticate::class);
+        $router->aliasMiddleware('guest', RedirectIfAuthenticated::class);
 
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, function () {

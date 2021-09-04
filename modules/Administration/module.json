@@ -8,6 +8,8 @@
         "Modules\\Administration\\Providers\\AdministrationServiceProvider"
     ],
     "aliases": {},
-    "files": [],
+    "files": [
+        "helpers.php"
+    ],
     "requires": []
 }

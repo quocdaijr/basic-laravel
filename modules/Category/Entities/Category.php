@@ -2,13 +2,14 @@
 
 namespace Modules\Category\Entities;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Core\Entities\CoreModel;
-use Modules\Core\Enums\CoreStatusEnum;
+use Modules\Category\Traits\Relations\FileRelationTrait;
+use Modules\Category\Traits\Relations\PostRelationTrait;
+use Modules\Core\Entities\CoreEloquent;
 
-class Category extends CoreModel
+class Category extends CoreEloquent
 {
-    use HasFactory;
+    use PostRelationTrait;
+    use FileRelationTrait;
 
     /**
      * @var string
@@ -31,7 +32,11 @@ class Category extends CoreModel
         'slug',
         'description',
         'status',
-        'parent_id'
+        'parent_id',
+        'thumbnail',
+        'cover',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -40,9 +45,4 @@ class Category extends CoreModel
     protected $casts = [
         'status' => 'integer'
     ];
-
-//    protected static function newFactory()
-//    {
-//        return \Modules\Category\Database\Factories\CategoryFactory::new();
-//    }
 }

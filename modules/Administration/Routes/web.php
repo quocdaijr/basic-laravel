@@ -12,15 +12,15 @@
 */
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('login', 'LoginController@getLogin')->name('get.login');
-    Route::post('login', 'LoginController@postLogin')->name('post.login');
-    Route::get('forgot-password', 'ForgotPasswordController@getForgotPassword')->name('get.forgot-password');
-    Route::post('forgot-password', 'ForgotPasswordController@postForgotPassword')->name('post.forgot-password');
-    Route::get('reset-password/{token}', 'ResetPasswordController@getResetPassword')->name('get.reset-password');
-    Route::post('reset-password', 'ResetPasswordController@postResetPassword')->name('post.reset-password');
+    Route::get('login', 'Auth\LoginController@getLogin')->name('get.login');
+    Route::post('login', 'Auth\LoginController@postLogin')->name('post.login');
+    Route::get('forgot-password', 'Auth\ForgotPasswordController@getForgotPassword')->name('get.forgot-password');
+    Route::post('forgot-password', 'Auth\ForgotPasswordController@postForgotPassword')->name('post.forgot-password');
+    Route::get('reset-password/{token}', 'Auth\ResetPasswordController@getResetPassword')->name('get.reset-password');
+    Route::post('reset-password', 'Auth\ResetPasswordController@postResetPassword')->name('post.reset-password');
 });
 
-Route::post('logout', 'LoginController@logout')->name('logout');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 
 Route::group(['prefix' => 'administration', 'as' => 'administration.', 'middleware' => 'auth'], function () {

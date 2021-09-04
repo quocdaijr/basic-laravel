@@ -4,6 +4,8 @@ namespace Modules\Core\Constants;
 
 class CoreConstant
 {
+    public const MODULE_NAME = 'modules';
+
     public const STATUS_ACTIVE = 10;
     public const STATUS_DISABLE = 20;
     public const STATUS_DELETED = 30;
@@ -14,9 +16,9 @@ class CoreConstant
     public static function statuses()
     {
         return [
-            self::STATUS_ACTIVE => 'active',
-            self::STATUS_DISABLE => 'disable',
-            self::STATUS_DELETED => 'delete',
+            self::STATUS_ACTIVE => __('Active'),
+            self::STATUS_DISABLE => __('Disable'),
+            self::STATUS_DELETED => __('Delete'),
         ];
     }
 

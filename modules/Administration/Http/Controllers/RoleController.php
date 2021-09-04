@@ -66,7 +66,7 @@ class RoleController extends CoreController
      */
     public function edit($id)
     {
-        if ($role = $this->roleRepository->one($id)) {
+        if ($role = $this->roleRepository->find($id)) {
             $permissions = $this->permissionRepository->all();
             $roleHasPermissions = array_column(json_decode($role->permissions, true), 'id');
 
@@ -82,7 +82,7 @@ class RoleController extends CoreController
      */
     public function update(int $id, UpdateRoleRequest $request)
     {
-        if ($role = $this->roleRepository->one($id)) {
+        if ($role = $this->roleRepository->find($id)) {
             $this->roleRepository->update($id, [
                 'name' => $request->name,
                 'title' => $request->title
@@ -101,7 +101,7 @@ class RoleController extends CoreController
      */
     public function delete(int $id)
     {
-        if ($this->roleRepository->one($id)) {
+        if ($this->roleRepository->find($id)) {
             $this->roleRepository->delete($id);
             return redirect()->route('administration.role.index')->withToastSuccess('Delete success');
         }

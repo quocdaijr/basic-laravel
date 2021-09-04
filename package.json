@@ -27,6 +27,7 @@
         "@ckeditor/ckeditor5-build-classic": "^29.1.0",
         "@sweetalert2/theme-dark": "^5.0.2",
         "@sweetalert2/theme-default": "^5.0.2",
+        "slim-select": "^1.26.2",
         "sweetalert2": "^11.1.4"
     }
 }

@@ -12,12 +12,13 @@ Breadcrumbs::for('category.create', function (BreadcrumbTrail $trail) {
     $trail->push('Create', route('category.create'));
 });
 
-Breadcrumbs::for('category.edit', function (BreadcrumbTrail $trail, $category) {
+Breadcrumbs::for('category.edit', function (BreadcrumbTrail $trail, $model) {
     $trail->parent('category.index');
-    $trail->push('Edit ' . $category->name, route('category.edit', $category->id));
+    $trail->parent('edit');
+    $trail->push($model->name, route('category.edit', $model->id));
 });
 
-Breadcrumbs::for('category.show', function (BreadcrumbTrail $trail, $category) {
+Breadcrumbs::for('category.show', function (BreadcrumbTrail $trail, $model) {
     $trail->parent('category.index');
-    $trail->push($category->name, route('category.show', $category->id));
+    $trail->push($model->name, route('category.show', $model->id));
 });

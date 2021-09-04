@@ -42,9 +42,72 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param $id
      * @return Eloquent|Eloquent[]|Collection|Model|null
      */
-    public function one($id)
+    public function find($id)
     {
         return $this->model->find($id);
+    }
+
+    public function findByAttributes(array $attributes)
+    {
+        return $this->buildQueryByAttributes($attributes)->first();
+    }
+
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc')
+    {
+        return $this->buildQueryByAttributes($attributes, $orderBy, $sortOrder)->get();
+    }
+
+    private function buildQueryByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc')
+    {
+        $query = $this->model->query();
+
+        foreach ($attributes as $field => $value) {
+            $query->where($field, $value);
+        }
+
+        if ($orderBy !== null) {
+            $query->orderBy($orderBy, $sortOrder);
+        }
+        return $query;
+    }
+
+    public function search($attributes, $limit = null)
+    {
+        $query = $this->buildQuery($attributes);
+        if ($limit !== null)
+            $query->offset(0)->limit($limit);
+        return $query->get();
+    }
+
+    public function buildQuery($attributes)
+    {
+        $query = $this->model->query();
+
+        foreach ($attributes as $attribute) {
+            switch (count($attribute)) {
+                case 2:
+                    list($field, $value) = $attribute;
+                    $operator = '=';
+                    $boolean = 'and';
+                    break;
+                case 3:
+                    list($field, $operator, $value) = $attribute;
+                    $boolean = 'and';
+                    break;
+                case 4:
+                    list($field, $operator, $value, $boolean) = $attribute;
+                    break;
+                default:
+                    $field = null;
+                    $operator = '=';
+                    $value = null;
+                    $boolean = 'and';
+
+            }
+            if ($field !== null || $value !== null)
+                $query->where($field, $operator, $value, $boolean);
+        }
+        return $query;
     }
 
     /**

@@ -96,7 +96,7 @@ class UserController extends CoreController
      */
     public function edit($id)
     {
-        if (!empty($user = $this->userRepository->one($id))) {
+        if (!empty($user = $this->userRepository->find($id))) {
             $roles = $this->roleRepository->all();
             $permissions = $this->permissionRepository->all();
 
@@ -116,7 +116,7 @@ class UserController extends CoreController
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        if (!empty($user = $this->userRepository->one($id))) {
+        if (!empty($user = $this->userRepository->find($id))) {
             $data = [
                 'username' => $request->username,
                 'email' => $request->email,
@@ -149,7 +149,7 @@ class UserController extends CoreController
      */
     public function destroy($id)
     {
-        if ($this->userRepository->one($id)) {
+        if ($this->userRepository->find($id)) {
             $this->userRepository->update($id, [
                 'status' => CoreConstant::STATUS_DELETED
             ]);

@@ -4,5 +4,6 @@
     "Dashboard": true,
     "Category": true,
     "Post": true,
-    "File": true
+    "File": true,
+    "Tag": true
 }

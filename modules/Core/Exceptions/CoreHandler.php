@@ -2,12 +2,8 @@
 
 namespace Modules\Core\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\Handler;
-use Illuminate\Http\Client\HttpClientException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class CoreHandler extends Handler

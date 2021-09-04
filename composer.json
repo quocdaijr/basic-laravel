@@ -17,6 +17,9 @@
         "quocdaijr/administration": "*@dev",
         "quocdaijr/core": "*@dev",
         "quocdaijr/dashboard": "*@dev",
+        "quocdaijr/file": "*@dev",
+        "quocdaijr/category": "*@dev",
+        "quocdaijr/tag": "*@dev",
         "quocdaijr/post": "*@dev"
     },
     "require-dev": {

@@ -6,7 +6,10 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
+use Modules\Post\Entities\Post;
 use Modules\Post\Listeners\BuildPostSidebarListener;
+use Modules\Post\Repositories\Eloquent\PostRepository;
+use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 
 class PostServiceProvider extends ServiceProvider
 {
@@ -43,6 +46,10 @@ class PostServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+        $this->app->bind(PostRepositoryInterface::class, function () {
+            return new PostRepository(new Post());
+        });
 
         $this->app['events']->listen(
             BuildSidebarEvent::class,
