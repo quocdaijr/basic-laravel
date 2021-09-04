@@ -15,12 +15,13 @@
         "mcamara/laravel-localization": "^1.6",
         "nwidart/laravel-modules": "^8.2",
         "quocdaijr/administration": "*@dev",
+        "quocdaijr/category": "*@dev",
         "quocdaijr/core": "*@dev",
         "quocdaijr/dashboard": "*@dev",
         "quocdaijr/file": "*@dev",
-        "quocdaijr/category": "*@dev",
+        "quocdaijr/post": "*@dev",
         "quocdaijr/tag": "*@dev",
-        "quocdaijr/post": "*@dev"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
