@@ -9,6 +9,9 @@ class Text extends FieldAbstract
 
     public function render()
     {
-        return view($this->folderView . 'text');
+        if (($this->options['type'] ?? '') === 'textarea')
+            return view($this->folderView . 'textarea');
+        else
+            return view($this->folderView . 'text');
     }
 }

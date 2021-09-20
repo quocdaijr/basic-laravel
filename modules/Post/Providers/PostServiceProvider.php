@@ -3,12 +3,15 @@
 namespace Modules\Post\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
+use Modules\Post\Console\BuildPostElasticsearchCommand;
 use Modules\Post\Entities\Post;
+use Modules\Post\Indexes\Post as PostIndex;
 use Modules\Post\Listeners\BuildPostSidebarListener;
+use Modules\Post\Repositories\Elasticsearch\PostElasticsearchRepository;
 use Modules\Post\Repositories\Eloquent\PostRepository;
+use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 
 class PostServiceProvider extends ServiceProvider
@@ -51,10 +54,16 @@ class PostServiceProvider extends ServiceProvider
             return new PostRepository(new Post());
         });
 
+        $this->app->bind(PostElasticsearchRepositoryInterface::class, function () {
+            return new PostElasticsearchRepository(new PostIndex());
+        });
         $this->app['events']->listen(
             BuildSidebarEvent::class,
             BuildPostSidebarListener::class
         );
+        $this->commands([
+            BuildPostElasticsearchCommand::class
+        ]);
     }
 
     /**

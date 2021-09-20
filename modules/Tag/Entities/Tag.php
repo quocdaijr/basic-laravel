@@ -5,9 +5,12 @@ namespace Modules\Tag\Entities;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Core\Entities\CoreEloquent;
 use Modules\Post\Entities\Post;
+use Modules\Tag\Traits\Relations\PostRelationTrait;
 
 class Tag extends CoreEloquent
 {
+    use PostRelationTrait;
+
     /**
      * @var string
      */
@@ -42,9 +45,4 @@ class Tag extends CoreEloquent
     protected $casts = [
         'status' => 'integer'
     ];
-
-    public function posts(): BelongsToMany
-    {
-        return $this->belongsToMany(Post::class, 'post_has_categories');
-    }
 }

@@ -15,7 +15,12 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        (!empty(env('APP_API_URL')) ? (parse_url(env('APP_API_URL'))['host'] ?? '') : '') => [
+            '/*'
+        ]
+    ],
 
     'allowed_methods' => ['*'],
 

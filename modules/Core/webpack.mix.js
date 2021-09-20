@@ -13,8 +13,10 @@ mix.js(__dirname + '/Resources/assets/js/core.js', publicDist + 'js/core.js')
     .js(__dirname + '/Resources/assets/js/sweetalert.js', publicDist + 'js/sweetalert.js')
     .js(__dirname + '/Resources/assets/js/ck-editor.js', publicDist + 'js/ck-editor.js')
     .js(__dirname + '/Resources/assets/js/slim-select.js', publicDist + 'js/slim-select.js')
+    .js(__dirname + '/Resources/assets/js/flatpickr.js', publicDist + 'js/flatpickr.js')
     .js(__dirname + '/Resources/assets/js/forms/multiple-select.js', publicDist + 'js/forms/multiple-select.js')
     .js(__dirname + '/Resources/assets/js/forms/upload-and-preview.js', publicDist + 'js/forms/upload-and-preview.js')
+    .postCss(__dirname + '/Resources/assets/css/flatpickr.css', publicDist + 'css/flatpickr.css')
     .postCss(__dirname + '/Resources/assets/css/core.css', publicDist + 'css/core.css', [
         require('postcss-import'),
         require('tailwindcss')

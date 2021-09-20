@@ -7,16 +7,15 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Modules\Category\Repositories\Interfaces\CategoryRepositoryInterface;
 use Modules\Core\Http\Controllers\CoreController;
 use Modules\Post\Constants\PostConstant;
 use Modules\Post\Http\Requests\CreatePostRequest;
 use Modules\Post\Http\Requests\UpdatePostRequest;
+use Modules\Post\Jobs\IndexPostElasticsearch;
+use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 use Modules\Tag\Repositories\Interfaces\TagRepositoryInterface;
-use Storage;
 
 class PostController extends CoreController
 {
@@ -24,7 +23,8 @@ class PostController extends CoreController
     public function __construct(
         protected PostRepositoryInterface     $postRepository,
         protected CategoryRepositoryInterface $categoryRepository,
-        protected TagRepositoryInterface      $tagRepository
+        protected TagRepositoryInterface      $tagRepository,
+        protected PostElasticsearchRepositoryInterface $postElasticsearchRepository
     )
     {
         parent::__construct();
@@ -61,8 +61,10 @@ class PostController extends CoreController
             'name' => $request->name,
             'title' => $request->title,
             'slug' => $request->slug,
+            'description' => $request->description,
             'content' => $request->post('content'),
-            'status' => PostConstant::getStatusByAction($request->action)
+            'status' => PostConstant::getStatusByAction($request->action),
+            'published_at' => $request->published_at ?? null
         ];
 
         $post = $this->postRepository->create($data);
@@ -73,6 +75,9 @@ class PostController extends CoreController
         $post->tags()->sync(array_unique($tags));
 
         $post->files()->syncWithPivotValues([$request->thumbnail], ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]);
+
+        $job = (new IndexPostElasticsearch($post->id));
+        dispatch($job);
 
         return redirect()->route('post.index')->withToastSuccess('Create success');
     }
@@ -100,7 +105,7 @@ class PostController extends CoreController
                 foreach ($post->files->toArray() as $k => $v) {
                     if (!empty($v['pivot']['type']) && $v['pivot']['type'] == PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL) {
                         $post->thumbnail['id'] = $v['id'];
-                        $post->thumbnail['url'] = Storage::disk('public')->url($v['path']);
+                        $post->thumbnail['url'] = getUrlFile($v['path']);
                     }
                 }
             }
@@ -121,8 +126,10 @@ class PostController extends CoreController
                 'name' => $request->name,
                 'title' => $request->title,
                 'slug' => $request->slug,
+                'description' => $request->description,
                 'content' => $request->post('content'),
-                'status' => PostConstant::getStatusByAction($request->action, $oldPost->status)
+                'status' => PostConstant::getStatusByAction($request->action, $oldPost->status),
+                'published_at' => $request->published_at ?? null
             ];
 
             $oldPost->categories()->sync($request->categories);
@@ -134,6 +141,8 @@ class PostController extends CoreController
             $oldPost->files()->syncWithPivotValues([$request->thumbnail], ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]);
 
             $this->postRepository->update($id, $data);
+
+            dispatch(new IndexPostElasticsearch($id));
 
             return redirect()->route('post.index')->with('success', 'Update success');
         }

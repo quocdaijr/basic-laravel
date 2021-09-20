@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Category\Entities\Category;
 use Modules\Core\Entities\CoreEloquent;
 use Modules\File\Entities\File;
+use Modules\Post\Traits\Relations\CategoryRelationTrait;
+use Modules\Post\Traits\Relations\FileRelationTrait;
+use Modules\Post\Traits\Relations\TagRelationTrait;
 use Modules\Tag\Entities\Tag;
 
 class Post extends CoreEloquent
 {
+    use FileRelationTrait, CategoryRelationTrait, TagRelationTrait;
+
     public $thumbnail;
     /**
      * @var string
@@ -49,19 +54,4 @@ class Post extends CoreEloquent
     protected $casts = [
         'status' => 'integer'
     ];
-
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class, 'post_has_categories');
-    }
-
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'post_has_tags');
-    }
-
-    public function files(): BelongsToMany
-    {
-        return $this->belongsToMany(File::class, 'post_has_files')->withPivot('type');
-    }
 }

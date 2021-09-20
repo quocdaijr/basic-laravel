@@ -13,6 +13,7 @@
                 @include('post::partials.categories')
                 @include('post::partials.tags')
                 @include('post::partials.thumbnail')
+                @include('post::partials.published-time')
                 @include('post::partials.action')
             </div>
         </div>

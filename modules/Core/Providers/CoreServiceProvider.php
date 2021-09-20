@@ -9,6 +9,8 @@ use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Exceptions\CoreHandler;
+use Modules\Core\Http\Middleware\Cors;
+use Modules\Core\Http\Middleware\ForceJsonResponse;
 use Modules\Core\Supports\CustomResourceRegistrar;
 use Modules\Core\Traits\RegisterDataTrait;
 use RealRashid\SweetAlert\ToSweetAlert;
@@ -34,11 +36,8 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $router = $this->app[Router::class];
-        $router->pushMiddlewareToGroup('web', ToSweetAlert::class);
-
         $this->registerTranslations();
-        $this->registerMultiConfig(['config']);
+        $this->registerMultiConfig(['config', 'elasticsearch']);
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
         Blade::directive('datetime', function ($expression) {

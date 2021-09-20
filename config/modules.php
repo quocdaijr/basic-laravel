@@ -270,4 +270,6 @@ return [
     ],
 
     'activator' => 'file',
+
+    'api_url' => env("APP_API_URL")
 ];

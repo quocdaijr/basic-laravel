@@ -23,6 +23,8 @@
                         <tr
                             class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                         >
+                            <th class="px-4 py-3">#</th>
+                            <th class="px-4 py-3">ID</th>
                             <th class="px-4 py-3">Name</th>
                             <th class="px-4 py-3">Slug</th>
                             <th class="px-4 py-3">Status</th>
@@ -33,8 +35,21 @@
                         <tbody
                             class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                         >
+                        @php
+                        $n = 1 + ((request()->get('page', 1) - 1) * \Modules\Core\Constants\CoreConstant::PER_PAGE_DEFAULT);
+                        @endphp
                         @foreach($posts as $post)
                             <tr class="text-gray-700 dark:text-gray-400">
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center text-sm">
+                                        {{$n++}}
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center text-sm">
+                                        {{$post->id}}
+                                    </div>
+                                </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center text-sm">
                                         {{$post->name}}
@@ -50,7 +65,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     <div class="flex items-center text-sm">
-                                        {{$post->created_at}}
+                                        {{$post->published_at}}
                                     </div>
                                 </td>
                                 <td class="flex flex-wrap">

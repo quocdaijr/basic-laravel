@@ -6,6 +6,8 @@ class CoreConstant
 {
     public const MODULE_NAME = 'modules';
 
+    public const PER_PAGE_DEFAULT = 10;
+
     public const STATUS_ACTIVE = 10;
     public const STATUS_DISABLE = 20;
     public const STATUS_DELETED = 30;
