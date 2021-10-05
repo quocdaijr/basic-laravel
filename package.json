@@ -10,26 +10,25 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@tailwindcss/forms": "^0.3.1",
+        "@tailwindcss/forms": "^0.3.4",
         "@tailwindcss/typography": "^0.4.0",
-        "alpinejs": "^3.2.3",
-        "axios": "^0.21",
-        "laravel-mix": "^6.0.28",
+        "alpinejs": "^3.4.2",
+        "axios": "^0.21.4",
+        "laravel-mix": "^6.0.31",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
+        "postcss": "^8.3.9",
         "postcss-import": "^14.0.1",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.38.0",
+        "sass": "^1.42.1",
         "sass-loader": "^12.1.0",
-        "tailwindcss": "^2.2.2"
+        "tailwindcss": "^2.2.16"
     },
     "dependencies": {
-        "@sweetalert2/theme-dark": "^5.0.2",
-        "@sweetalert2/theme-default": "^5.0.2",
+        "@sweetalert2/theme-default": "^5.0.5",
         "flatpickr": "^4.6.9",
         "prismjs": "^1.25.0",
-        "slim-select": "^1.26.2",
-        "sweetalert2": "^11.1.4",
+        "slim-select": "^1.27.0",
+        "sweetalert2": "^11.1.7",
         "tinymce": "^5.9.2",
         "toastr": "^2.1.4"
     }
