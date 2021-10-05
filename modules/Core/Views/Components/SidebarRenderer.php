@@ -15,7 +15,7 @@ use Modules\Core\Constants\CoreConstant;
 class SidebarRenderer extends IlluminateSidebarRenderer
 {
 
-    protected $folderView = 'core::sidebar.';
+    protected $folderView = 'core::components.sidebar.';
 
     /**
      * @param Sidebar $sidebar

@@ -24,6 +24,10 @@ return [
                 'title' => 'File Delete',
                 'name' => 'file.destroy'
             ],
+            [
+                'title' => 'File List Files',
+                'name' => 'file.files'
+            ],
         ]
     ]
 ];

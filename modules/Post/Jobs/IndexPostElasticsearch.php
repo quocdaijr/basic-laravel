@@ -3,12 +3,12 @@
 namespace Modules\Post\Jobs;
 
 use Exception;
-use Modules\Core\Jobs\IndexElasticsearch;
+use Modules\Core\Jobs\CoreJob;
 use Modules\Post\Constants\PostConstant;
 use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 
-class IndexPostElasticsearch extends IndexElasticsearch
+class IndexPostElasticsearch extends CoreJob
 {
 
     /**
@@ -73,7 +73,7 @@ class IndexPostElasticsearch extends IndexElasticsearch
                             'path' => $file->path,
                             'type' => $file->type,
                             'size' => $file->size,
-                            'mine_type' => $file->mine_type,
+                            'mimetype' => $file->mimetype,
                             'where' => $file->where,
                         ];
                         break;

@@ -8,7 +8,7 @@ use Maatwebsite\Sidebar\Middleware\ResolveSidebars;
 use Maatwebsite\Sidebar\SidebarManager;
 use Modules\Core\Supports\AdminSidebar;
 use Modules\Core\Views\Components\SidebarRenderer;
-use Modules\Core\Views\SidebarViewCreator;
+use Modules\Core\Views\Creators\Sidebar;
 use View;
 
 class SidebarServiceProvider extends ServiceProvider
@@ -32,7 +32,7 @@ class SidebarServiceProvider extends ServiceProvider
 
         View::creator(
             'core::partials.sidebar',
-            SidebarViewCreator::class
+            Sidebar::class
         );
     }
 }

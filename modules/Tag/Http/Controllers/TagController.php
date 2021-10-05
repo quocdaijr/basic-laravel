@@ -104,13 +104,14 @@ class TagController extends CoreController
         abort(404);
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $txt = $request->txt ?? '';
         $number = $request->number ?? 10;
         $tags = $this->tagRepository->search([
             ['name', 'like', "%$txt%"]
-        ], $number);
+        ], limit: $number);
 
-        return $tags->pluck('name');
+        return response()->json(!empty($tags['data']) ? $tags['data']->pluck('name') : []);
     }
 }

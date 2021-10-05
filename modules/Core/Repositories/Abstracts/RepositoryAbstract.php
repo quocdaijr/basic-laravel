@@ -3,8 +3,10 @@
 namespace Modules\Core\Repositories\Abstracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Constants\CoreConstant;
 use Modules\Core\Repositories\Interfaces\RepositoryInterface;
 use Eloquent;
 
@@ -24,40 +26,56 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param int $perPage
      * @return LengthAwarePaginator
      */
-    public function pagination(int $perPage = 10)
+    public function pagination(int $perPage = 10): LengthAwarePaginator
     {
-        return $this->model->paginate($perPage);
+        return $this->model->orderBy('id', 'desc')->paginate($perPage);
     }
 
     /**
      * @param array $with
-     * @return mixed
+     * @return Collection|array
      */
-    public function all(array $with = [])
+    public function all(array $with = []): Collection|array
     {
         return $this->model->get();
     }
 
     /**
      * @param $id
-     * @return Eloquent|Eloquent[]|Collection|Model|null
+     * @return Model|Collection|Eloquent|array|null
      */
-    public function find($id)
+    public function find($id): Model|Collection|Eloquent|array|null
     {
         return $this->model->find($id);
     }
 
-    public function findByAttributes(array $attributes)
+    /**
+     * @param array $attributes
+     * @return Model|Builder|null
+     */
+    public function findByAttributes(array $attributes): Model|Builder|null
     {
         return $this->buildQueryByAttributes($attributes)->first();
     }
 
-    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc')
+    /**
+     * @param array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Collection|array
+     */
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Collection|array
     {
         return $this->buildQueryByAttributes($attributes, $orderBy, $sortOrder)->get();
     }
 
-    private function buildQueryByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc')
+    /**
+     * @param array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Builder
+     */
+    private function buildQueryByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Builder
     {
         $query = $this->model->query();
 
@@ -71,15 +89,34 @@ abstract class RepositoryAbstract implements RepositoryInterface
         return $query;
     }
 
-    public function search($attributes, $limit = null)
+    /**
+     * @param $attributes
+     * @param int $offset
+     * @param int $limit
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return array
+     */
+    public function search($attributes, $offset = 0, $limit = CoreConstant::PER_PAGE_DEFAULT, string $orderBy = null, string $sortOrder = 'asc'): array
     {
         $query = $this->buildQuery($attributes);
-        if ($limit !== null)
-            $query->offset(0)->limit($limit);
-        return $query->get();
+        $total = $query->count();
+        if ($orderBy !== null)
+            $query->orderBy($orderBy, $sortOrder);
+        $data = $query->offset($offset)->limit($limit)->get();
+
+        return [
+            'totalItems' => $total,
+            'totalPages' => ceil($total / $limit),
+            'data' => $data
+        ];
     }
 
-    public function buildQuery($attributes)
+    /**
+     * @param $attributes
+     * @return Builder
+     */
+    public function buildQuery($attributes): Builder
     {
         $query = $this->model->query();
 
@@ -112,9 +149,9 @@ abstract class RepositoryAbstract implements RepositoryInterface
 
     /**
      * @param array $attributes
-     * @return Eloquent|Model
+     * @return Model|Eloquent
      */
-    public function create(array $attributes)
+    public function create(array $attributes): Model|Eloquent
     {
         return $this->model->create($attributes);
     }
@@ -124,7 +161,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param array $attributes
      * @return bool
      */
-    public function update(int $id, array $attributes)
+    public function update(int $id, array $attributes): bool
     {
         return $this->model->find($id)->update($attributes);
     }
@@ -134,7 +171,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param array $values
      * @return Eloquent|Model
      */
-    public function updateOrCreate(array $attributes, array $values = [])
+    public function updateOrCreate(array $attributes, array $values = []): Model|Eloquent
     {
         return $this->model->updateOrCreate($attributes, $values);
     }
@@ -143,7 +180,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param int $id
      * @return bool|null
      */
-    public function delete(int $id)
+    public function delete(int $id): ?bool
     {
         return $this->model->find($id)->delete();
     }
@@ -151,7 +188,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
     /**
      * @return string|null
      */
-    public function getDb()
+    public function getDb(): ?string
     {
         return $this->model->getConnection()->getName();
     }
@@ -159,7 +196,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
     /**
      * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return $this->model->getTable();
     }
@@ -167,7 +204,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
     /**
      * @return Eloquent|Model
      */
-    public function getModel()
+    public function getModel(): Model|Eloquent
     {
         return $this->model;
     }
@@ -176,7 +213,7 @@ abstract class RepositoryAbstract implements RepositoryInterface
      * @param $model
      * @return RepositoryAbstract
      */
-    public function setModel($model)
+    public function setModel($model): static
     {
         $this->model = $model;
         return $this;

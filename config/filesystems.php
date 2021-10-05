@@ -39,8 +39,13 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_ST_URL'),
             'visibility' => 'public',
+            'cache' => [
+                'store' => 'redis',
+                'expire' => 600,
+                'prefix' => 'storage_cache',
+            ],
         ],
 
         's3' => [

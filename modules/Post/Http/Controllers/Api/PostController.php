@@ -40,4 +40,13 @@ class PostController extends ApiController
         }
         return $data ?? [];
     }
+
+    public function postBySlug($slug)
+    {
+        $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug]);
+        if (!empty($data = $post['_source'])) {
+            $data['thumbnail'] = getUrlFile($data['thumbnail'] ?? '');
+        }
+        return $data ?? [];
+    }
 }

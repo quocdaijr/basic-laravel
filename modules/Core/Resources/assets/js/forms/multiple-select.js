@@ -34,6 +34,7 @@ window.multipleSelect = function multipleSelect(idName) {
             })
         },
         initOptions(oldValues) {
+            oldValues = oldValues.map(val=>parseInt(val))
             const options = document.getElementById(idName).options;
             for (let i = 0; i < options.length; i++) {
                 let currentIndex = this.options.push({
@@ -53,7 +54,7 @@ window.multipleSelect = function multipleSelect(idName) {
             let options = Array.from(document.querySelectorAll('#' + idName + ' option'));
 
             values.forEach(function(v) {
-                options.find(c => c.value == v).selected = true
+                options.find(c => c.value === v).selected = true
             });
         }
     }

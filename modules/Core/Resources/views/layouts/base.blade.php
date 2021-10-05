@@ -11,9 +11,11 @@
     {{-- Laravel Mix - CSS File --}}
     <link rel="stylesheet" href="{{ mix('modules/core/css/core.css') }}">
     <link rel="stylesheet" href="{{ mix('modules/core/css/sweetalert-theme.css') }}">
+    <link rel="stylesheet" href="{{ mix('modules/core/css/toastr.css') }}">
     @stack('stylesheets')
     {{-- Laravel Mix - Header JS File --}}
     <script src="{{ mix('modules/core/js/sweetalert.js') }}"></script>
+    <script src="{{ mix('modules/core/js/toastr.js') }}"></script>
 </head>
 <body>
 @yield('common')

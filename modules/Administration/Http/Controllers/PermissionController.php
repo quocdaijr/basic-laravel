@@ -2,8 +2,12 @@
 
 namespace Modules\Administration\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Modules\Administration\Http\Requests\CreatePermissionRequest;
+use Modules\Administration\Http\Requests\UpdatePermissionRequest;
+use Modules\Administration\Repositories\Interfaces\GroupPermissionRepositoryInterface;
 use Modules\Administration\Repositories\Interfaces\PermissionRepositoryInterface;
 use Modules\Administration\Traits\PermissionTrait;
 use Modules\Core\Http\Controllers\CoreController;
@@ -13,7 +17,8 @@ class PermissionController extends CoreController
     use PermissionTrait;
 
     public function __construct(
-        protected PermissionRepositoryInterface $permissionRepository
+        protected PermissionRepositoryInterface      $permissionRepository,
+        protected GroupPermissionRepositoryInterface $groupPermissionRepository
     )
     {
         parent::__construct();
@@ -21,7 +26,7 @@ class PermissionController extends CoreController
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -31,61 +36,89 @@ class PermissionController extends CoreController
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function create()
     {
-        return view('administration::create');
+        $groupPermission = $this->groupPermissionRepository->all();
+        return view('administration::permission.create', compact('groupPermission'));
     }
 
     /**
      * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
+     * @param CreatePermissionRequest $request
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(CreatePermissionRequest $request)
     {
-        //
+        $this->permissionRepository->create([
+            'name' => $request->name,
+            'title' => $request->title,
+            'group_id' => $request->group_id
+        ]);
+
+        return redirect()->route('administration.permission.index')->withToastSuccess('Create success');
     }
 
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
-    public function show($id)
+    public function show(int $id)
     {
-        return view('administration::show');
+        if (!empty($permission = $this->permissionRepository->find($id))) {
+            return view('administration::permission.show', compact('permission'));
+        }
+        abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
-    public function edit($id)
+    public function edit(int $id)
     {
-        return view('administration::edit');
+        $groupPermission = $this->groupPermissionRepository->all();
+
+        if ($permission = $this->permissionRepository->find($id)) {
+            return view('administration::permission.edit', compact('permission', 'groupPermission'));
+        }
+        abort(404);
     }
 
     /**
      * Update the specified resource in storage.
-     * @param Request $request
+     * @param UpdatePermissionRequest $request
      * @param int $id
-     * @return Renderable
+     * @return void
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePermissionRequest $request, int $id)
     {
-        //
+        if ($this->permissionRepository->find($id)) {
+            $this->permissionRepository->update($id, [
+                'name' => $request->name,
+                'title' => $request->title,
+                'group_id' => $request->group_id
+            ]);
+
+            return redirect()->route('administration.permission.index')->withToastSuccess('Update success');
+        }
+        abort(404);
     }
 
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Renderable
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        if ($this->permissionRepository->find($id)) {
+            $this->permissionRepository->delete($id);
+            return redirect()->route('administration.permission.index')->withToastSuccess('Delete success');
+        }
+        abort(404);
     }
 }

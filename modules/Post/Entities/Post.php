@@ -16,6 +16,8 @@ class Post extends CoreEloquent
     use FileRelationTrait, CategoryRelationTrait, TagRelationTrait;
 
     public $thumbnail;
+
+    public $cover;
     /**
      * @var string
      */

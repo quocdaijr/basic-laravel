@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Modules\Category\Repositories\Interfaces\CategoryRepositoryInterface;
+use Modules\Core\Constants\CoreConstant;
 use Modules\Core\Http\Controllers\CoreController;
 use Modules\Post\Constants\PostConstant;
 use Modules\Post\Http\Requests\CreatePostRequest;
@@ -21,9 +22,9 @@ class PostController extends CoreController
 {
 
     public function __construct(
-        protected PostRepositoryInterface     $postRepository,
-        protected CategoryRepositoryInterface $categoryRepository,
-        protected TagRepositoryInterface      $tagRepository,
+        protected PostRepositoryInterface              $postRepository,
+        protected CategoryRepositoryInterface          $categoryRepository,
+        protected TagRepositoryInterface               $tagRepository,
         protected PostElasticsearchRepositoryInterface $postElasticsearchRepository
     )
     {
@@ -36,7 +37,7 @@ class PostController extends CoreController
      */
     public function index()
     {
-        $posts = $this->postRepository->pagination(20);
+        $posts = $this->postRepository->pagination(CoreConstant::PER_PAGE_DEFAULT);
         return view('post::index', compact('posts'));
     }
 
@@ -58,12 +59,15 @@ class PostController extends CoreController
     public function store(CreatePostRequest $request)
     {
         $data = [
-            'name' => $request->name,
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'description' => $request->description,
+            'name' => $request->name ?? null,
+            'title' => $request->title ?? null,
+            'slug' => $request->slug ?? null,
+            'description' => $request->description ?? null,
+            'author' => $request->author ?? null,
+            'location' => $request->location ?? null,
+            'source' => $request->source ?? null,
             'content' => $request->post('content'),
-            'status' => PostConstant::getStatusByAction($request->action),
+            'status' => PostConstant::getStatusByAction($request->action ?? null),
             'published_at' => $request->published_at ?? null
         ];
 
@@ -74,7 +78,10 @@ class PostController extends CoreController
         $tags = $this->tagRepository->saveFromNames(array_unique($request->tags ?? []));
         $post->tags()->sync(array_unique($tags));
 
-        $post->files()->syncWithPivotValues([$request->thumbnail], ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]);
+        $post->files()->attach([$request->thumbnail => ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]]);
+
+        if (!empty($request->cover))
+            $post->files()->attach([$request->cover => ['type' => PostConstant::POST_HAS_FILE_TYPE_COVER]]);
 
         $job = (new IndexPostElasticsearch($post->id));
         dispatch($job);
@@ -103,9 +110,15 @@ class PostController extends CoreController
             $categories = $this->categoryRepository->all();
             if (!empty($post->files->toArray())) {
                 foreach ($post->files->toArray() as $k => $v) {
-                    if (!empty($v['pivot']['type']) && $v['pivot']['type'] == PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL) {
-                        $post->thumbnail['id'] = $v['id'];
-                        $post->thumbnail['url'] = getUrlFile($v['path']);
+                    switch ($v['pivot']['type'] ?? '') {
+                        case PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL:
+                            $post->thumbnail['id'] = $v['id'];
+                            $post->thumbnail['url'] = getUrlFile($v['path']);
+                            break;
+                        case PostConstant::POST_HAS_FILE_TYPE_COVER:
+                            $post->cover['id'] = $v['id'];
+                            $post->cover['url'] = getUrlFile($v['path']);
+                            break;
                     }
                 }
             }
@@ -123,12 +136,15 @@ class PostController extends CoreController
     {
         if (!empty($oldPost = $this->postRepository->find($id))) {
             $data = [
-                'name' => $request->name,
-                'title' => $request->title,
-                'slug' => $request->slug,
-                'description' => $request->description,
+                'name' => $request->name ?? null,
+                'title' => $request->title ?? null,
+                'slug' => $request->slug ?? null,
+                'description' => $request->description ?? null,
+                'author' => $request->author ?? null,
+                'location' => $request->location ?? null,
+                'source' => $request->source ?? null,
                 'content' => $request->post('content'),
-                'status' => PostConstant::getStatusByAction($request->action, $oldPost->status),
+                'status' => PostConstant::getStatusByAction($request->action ?? null, $oldPost->status ?? null),
                 'published_at' => $request->published_at ?? null
             ];
 
@@ -138,7 +154,21 @@ class PostController extends CoreController
 
             $oldPost->tags()->sync(array_unique($tags));
 
-            $oldPost->files()->syncWithPivotValues([$request->thumbnail], ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]);
+            $oldPost->files()->sync([$request->thumbnail => ['type' => PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL]]);
+
+            if (!empty($oldPost->files->toArray())) {
+                foreach ($oldPost->files->toArray() as $k => $v) {
+                    if (!empty($v['pivot']['type']) && $v['pivot']['type'] == PostConstant::POST_HAS_FILE_TYPE_THUMBNAIL) {
+                        $old_cover = $v['id'];
+                        break;
+                    }
+                }
+                if (!empty($old_cover))
+                    $oldPost->files()->detach([$old_cover => ['type' => PostConstant::POST_HAS_FILE_TYPE_COVER]]);
+            }
+
+            if (!empty($request->cover))
+                $oldPost->files()->attach([$request->cover => ['type' => PostConstant::POST_HAS_FILE_TYPE_COVER]]);
 
             $this->postRepository->update($id, $data);
 

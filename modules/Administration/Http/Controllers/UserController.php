@@ -3,7 +3,6 @@
 namespace Modules\Administration\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -29,17 +28,17 @@ class UserController extends CoreController
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function index()
     {
-        $users = $this->userRepository->pagination();
+        $users = $this->userRepository->pagination(CoreConstant::PER_PAGE_DEFAULT);
         return view('administration::user.index', compact('users'));
     }
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -82,11 +81,14 @@ class UserController extends CoreController
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
-    public function show($id)
+    public function show(int $id)
     {
-        return view('administration::user.show');
+        if (!empty($user = $this->userRepository->find($id))) {
+            return view('administration::user.show', compact('user'));
+        }
+        abort(404);
     }
 
     /**
@@ -94,7 +96,7 @@ class UserController extends CoreController
      * @param int $id
      * @return Application|Factory|View|void
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         if (!empty($user = $this->userRepository->find($id))) {
             $roles = $this->roleRepository->all();
@@ -112,9 +114,9 @@ class UserController extends CoreController
      * Update the specified resource in storage.
      * @param UpdateUserRequest $request
      * @param int $id
-     * @return RedirectResponse
+     * @return RedirectResponse|void
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, int $id)
     {
         if (!empty($user = $this->userRepository->find($id))) {
             $data = [
@@ -145,9 +147,9 @@ class UserController extends CoreController
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return RedirectResponse
+     * @return RedirectResponse|void
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         if ($this->userRepository->find($id)) {
             $this->userRepository->update($id, [

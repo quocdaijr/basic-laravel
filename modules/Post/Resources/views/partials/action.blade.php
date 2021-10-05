@@ -5,7 +5,6 @@ use Modules\Post\Constants\PostConstant;
 ?>
 
 <div class="my-4 text-sm text-center">
-
     @switch($post->status ?? null)
         @case(\Modules\Post\Constants\PostConstant::STATUS_DRAFT)
             <button type="submit" data-action="publish" name="action" value="publish"

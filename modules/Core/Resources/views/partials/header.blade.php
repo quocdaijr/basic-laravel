@@ -119,7 +119,7 @@
                                 <span
                                     class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
                                 >
-                          13
+                          0
                         </span>
                             </a>
                         </li>
@@ -132,7 +132,7 @@
                                 <span
                                     class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
                                 >
-                          2
+                          0
                         </span>
                             </a>
                         </li>
@@ -156,12 +156,20 @@
                     aria-label="Account"
                     aria-haspopup="true"
                 >
+                    @if(!empty(auth()->user()->profile_photo_url))
                     <img
                         class="object-cover w-8 h-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                        src="{{auth()->user()->profile_photo_url ?? ''}}"
                         alt=""
                         aria-hidden="true"
                     />
+                    @else
+                    <div
+                        class="object-cover w-8 h-8 relative flex justify-center items-center uppercase rounded-full text-xl text-white bg-yellow-500 dark:bg-yellow-600"
+                    >
+                        <b>{!! auth()->user()->username[0] ?? '?' !!}</b>
+                    </div>
+                    @endif
                 </button>
                 <template x-if="isProfileMenuOpen">
                     <ul

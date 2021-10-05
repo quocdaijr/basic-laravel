@@ -17,7 +17,10 @@ class CoreHandler extends Handler
                 404 => 'The page you requested does not exist.',
                 default => 'An error may have occurred.'
             };
-            if ($request->expectsJson() || $request->wantsJson() || $request->acceptsJson()) {
+            if ($request->expectsJson()
+                || $request->getHost() === parse_url(env('APP_API_URL'), PHP_URL_HOST)
+                || stripos($request->url(), $request->getHost() . '/api/') !== false
+            ) {
                 return response()->json(['message' => $msg], $statusCode);
             }
             toast($msg, 'error');

@@ -44,7 +44,8 @@ class CoreServiceProvider extends ServiceProvider
             return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
         });
         Paginator::defaultView('core::partials.pagination');
-        Blade::componentNamespace('Modules\\Core\\Views\\Forms\\Fields', 'field');
+        Blade::componentNamespace('Modules\\Core\\Views\\Components\\Forms\\Fields', 'field');
+        Blade::componentNamespace('Modules\\Core\\Views\\Components\\Modals', 'modal');
     }
 
     /**

@@ -3,6 +3,6 @@ if (!function_exists('isAdmin')) {
 
     function isAdmin()
     {
-        return Auth::user()->hasRole('admin');
+        return Auth::user()->hasRole('administration');
     }
 }

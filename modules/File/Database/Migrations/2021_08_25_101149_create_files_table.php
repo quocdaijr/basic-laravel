@@ -24,7 +24,7 @@ class CreateFilesTable extends Migration
             $table->string('url')->nullable();
             $table->string('where', '30');
             $table->string('type');
-            $table->string('mine_type');
+            $table->string('mimetype');
             $table->string('size')->nullable();
             $table->string('mtime')->nullable();
             $table->text('options')->nullable();

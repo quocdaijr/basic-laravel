@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Core\Traits\WriteLogTrait;
 
-class IndexElasticsearch implements ShouldQueue
+class CoreJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WriteLogTrait;
 }

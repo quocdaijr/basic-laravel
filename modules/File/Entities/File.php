@@ -36,7 +36,7 @@ class File extends CoreEloquent
         'url',
         'where',
         'type',
-        'mine_type',
+        'mimetype',
         'size',
         'mtime',
         'options',

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\Views\Forms\Fields;
+namespace Modules\Core\Views\Components\Forms\Fields;
 
-use Modules\Core\Views\Forms\FieldAbstract;
+use Modules\Core\Views\Components\Forms\FieldAbstract;
 
 class Tag extends FieldAbstract
 {

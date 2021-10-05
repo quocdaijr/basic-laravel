@@ -12,7 +12,4 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/file', function (Request $request) {
-    return $request->user();
-});
+Route::get('/st/i/{size}/{imagePath}', 'ResizeController@fly')->where('imagePath', '(.*)');

@@ -2,36 +2,107 @@
 
 namespace Modules\Core\Repositories\Interfaces;
 
+use Eloquent;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Core\Constants\CoreConstant;
+
 interface RepositoryInterface
 {
-    public function getDb();
+    /**
+     * @return string|null
+     */
+    public function getDb(): ?string;
 
-    public function getTable();
+    /**
+     * @return string
+     */
+    public function getTable(): string;
 
-    public function getModel();
+    /**
+     * @return Model|Eloquent
+     */
+    public function getModel(): Model|Eloquent;
 
-    public function setModel($model);
+    /**
+     * @param $model
+     * @return $this
+     */
+    public function setModel($model): static;
 
-    public function pagination(int $perPage);
+    /**
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     */
+    public function pagination(int $perPage): LengthAwarePaginator;
 
-    public function all();
+    /**
+     * @return Collection|array
+     */
+    public function all(): Collection|array;
 
-    public function find(int $id);
+    /**
+     * @param int $id
+     * @return Model|Collection|Eloquent|array|null
+     */
+    public function find(int $id): Model|Collection|Eloquent|array|null;
 
-    public function findByAttributes(array $attributes);
+    /**
+     * @param array $attributes
+     * @return Model|Builder|null
+     */
+    public function findByAttributes(array $attributes): Model|Builder|null;
 
-    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc');
+    /**
+     * @param array $attributes
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return Collection|array
+     */
+    public function getByAttributes(array $attributes, string $orderBy = null, string $sortOrder = 'asc'): Collection|array;
 
-    public function buildQuery($attributes);
+    /**
+     * @param $attributes
+     * @return Builder
+     */
+    public function buildQuery($attributes): Builder;
 
-    public function search($attributes, $limit = null);
+    /**
+     * @param $attributes
+     * @param int $offset
+     * @param int $limit
+     * @param string|null $orderBy
+     * @param string $sortOrder
+     * @return array
+     */
+    public function search($attributes, $offset = 0, $limit = CoreConstant::PER_PAGE_DEFAULT, string $orderBy = null, string $sortOrder = 'asc'): array;
 
-    public function create(array $attributes);
+    /**
+     * @param array $attributes
+     * @return Model|Eloquent
+     */
+    public function create(array $attributes): Model|Eloquent;
 
-    public function update(int $id, array $attributes);
+    /**
+     * @param int $id
+     * @param array $attributes
+     * @return bool
+     */
+    public function update(int $id, array $attributes): bool;
 
-    public function updateOrCreate(array $attributes, array $values = []);
+    /**
+     * @param array $attributes
+     * @param array $values
+     * @return Model|Eloquent
+     */
+    public function updateOrCreate(array $attributes, array $values = []): Model|Eloquent;
 
-    public function delete(int $id);
+    /**
+     * @param int $id
+     * @return bool|null
+     */
+    public function delete(int $id): ?bool;
 
 }

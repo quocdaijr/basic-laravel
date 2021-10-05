@@ -213,17 +213,131 @@ window.alertConfirm = function (form_id,
     })
 }
 
-window.ajaxUpload = async function (file, type = '') {
-    let formData = new FormData();
-    formData.append("upload", file);
-    // try {
-        return await axios.post('/file/create?type=' + type, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-    // } catch (err) {
-    //     console.error(err);
-    // }
+window.alertNotification = function (type,
+                                     text = '',
+) {
+    let icon
+    switch (type) {
+        case 'success':
+            icon = 'success'
+            break;
+        case 'error':
+            icon = 'error'
+            break;
+        case 'warning':
+            icon = 'warning'
+            break;
+        case 'question':
+            icon = 'question'
+            break;
+        case 'info':
+        default:
+            icon = 'info'
+            break
+    }
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        icon: icon,
+        text: text !== '' ? text : (type.charAt(0).toUpperCase() + type.slice(1))
+    });
+}
 
+window.toastrNotification = function (type,
+                                      text = '',
+                                      title = '',
+                                      overrideOptions = {}
+) {
+    switch (type) {
+        case 'success':
+            toastr.success(text, title, overrideOptions)
+            break;
+        case 'error':
+            toastr.error(text, title, overrideOptions)
+            break;
+        case 'warning':
+            toastr.warning(text, title, overrideOptions)
+            break;
+        case 'info':
+        default:
+            toastr.info(text, title, overrideOptions)
+            break
+    }
+
+}
+
+window.formatCapacity = function (capacity, unit = 'byte', decimals = 2) {
+    if (capacity === 0) return '0 BYTE';
+    let units;
+    switch (unit) {
+        case 'yb':
+            units = ['YB'];
+            break;
+        case 'zb':
+            units = ['ZB', 'YB'];
+            break;
+        case 'eb':
+            units = ['EB', 'ZB', 'YB'];
+            break;
+        case 'pb':
+            units = ['PB', 'EB', 'ZB', 'YB'];
+            break;
+        case 'tb':
+            units = ['TB', 'PB', 'EB', 'ZB', 'YB'];
+            break;
+        case 'gb':
+            units = ['GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            break;
+        case 'mb':
+            units = ['MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            break;
+        case 'kb':
+            units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            break;
+        case 'byte':
+        default:
+            units = ['BYTE', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+            break;
+    }
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+
+    const i = Math.floor(Math.log(capacity) / Math.log(k));
+
+    return parseFloat((capacity / Math.pow(k, i)).toFixed(dm)) + ' ' + units[i];
+}
+
+window.ajaxUpload = async function (file, filename = '', type = '') {
+    let formData = new FormData();
+    if (filename !== '')
+        formData.append("file", file, filename);
+    else
+        formData.append("file", file);
+    return await axios.post('/file/create?type=' + type, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+
+}
+
+window.ajaxUpdateFile = async function (id, data = {}) {
+
+    return await axios.put('/file/edit/' + id, data)
+}
+
+window.ajaxGetFiles = async function (params = {}) {
+
+    return await axios.get('/file/files', {
+        params: {
+            txt: params.txt || "",
+            type: params.type || "",
+            page: params.page || 1,
+            perPage: params.perPage || 10,
+        }
+    })
 }

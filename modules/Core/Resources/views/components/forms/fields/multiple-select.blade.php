@@ -6,19 +6,24 @@
             <option value="{{$key}}">{{$value}}</option>
         @endforeach
     </select>
-    <div x-data="multipleSelect('{{$options['id']}}')" x-init="initOptions({{json_encode(old($name, $oldValue))}})"
+    <div x-data="multipleSelect('{{$options['id']}}')"
+         x-init="initOptions({{json_encode(old($name, $oldValue))}})"
          class="w-full flex flex-col items-center h-auto mx-auto">
-{{--        <input name="{{$name}}" type="hidden" x-bind:value="selectedValues()">--}}
         <div class="inline-block relative w-full">
             <div class="flex flex-col items-center relative">
                 <div x-on:click="open" class="w-full">
-                    <div class="my-2 p-1 flex border border-gray-200 rounded @error($name) border-red-600 focus:border-red-400 focus:ring-red-200 dark:border-red-400 @else border-indigo-300 focus:border-indigo-300 focus:ring-indigo-200 dark:border-gray-600 @enderror">
+                    <div
+                        class="my-2 p-1 flex border border-gray-200 rounded
+                        @error($name) border-red-600 focus:border-red-400 focus:ring-red-200 dark:border-red-400
+                        @else border-indigo-300 focus:border-indigo-300 focus:ring-indigo-200 dark:border-gray-600
+                        @enderror"
+                    >
                         <div class="flex flex-auto flex-wrap">
-                            <template x-for="(option,index) in selected" :key="options[option].value">
+                            <template x-for="(option, index) in selected" :key="options[option].value">
                                 <div
                                     class="flex justify-center items-center m-1 font-medium py-1 px-1 text-gray-700 rounded bg-gray-200 border">
-                                    <div class="text-xs font-normal leading-none max-w-full flex-initial x-model="
-                                         options[option] x-text="options[option].text"></div>
+                                    <div class="text-xs font-normal leading-none max-w-full flex-initial"
+                                         x-model="options[option]" x-text="options[option].text"></div>
                                     <div class="flex flex-auto flex-row-reverse">
                                         <div x-on:click.stop="remove(index,option)">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3 w-3"
@@ -31,7 +36,7 @@
                                     </div>
                                 </div>
                             </template>
-                            <div x-show="selected.length == 0" class="flex-1">
+                            <div x-show="selected.length === 0" class="flex-1">
                                 <input placeholder="Select a option"
                                        class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"
                                        x-bind:value="selectedValues()">

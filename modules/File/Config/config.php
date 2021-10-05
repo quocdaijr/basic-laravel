@@ -4,9 +4,10 @@ use Modules\File\Constants\FileConstant;
 
 return [
     'name' => 'File',
-    'filesystem' => 'public',
+    'filesystem' => config('filesystems.default'),
+    'raw_folder' => 'r',
     'allowed_extensions' => 'jpg,jpeg,png,gif,txt,docx,zip,mp3,bmp,csv,xls,xlsx,ppt,pptx,pdf,mp4,doc,wav',
-    'mine_types' => [
+    'mimetypes' => [
         FileConstant::FILE_TYPE_IMAGE => [
             'image/png',
             'image/jpeg',
@@ -30,5 +31,13 @@ return [
             'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         ],
         FileConstant::FILE_TYPE_OTHER => []
+    ],
+    'allowed_resize' => true,
+    'sizes' => [
+        '240p' => [426, 240],
+        '360p' => [640, 360],
+        '480p' => [854, 480],
+        '720p' => [1280, 720],
+        '1080p' => [1920, 1080],
     ]
 ];

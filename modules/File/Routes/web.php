@@ -12,6 +12,7 @@
 */
 
 Route::group(['prefix' => 'file', 'as' => 'file.', 'middleware' => 'auth'], function() {
+    Route::get('files', 'FileController@files')->name('files');
     Route::resource('', 'FileController')
         ->parameters(['' => 'id']);
 });

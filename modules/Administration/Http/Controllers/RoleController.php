@@ -9,6 +9,7 @@ use Modules\Administration\Http\Requests\CreateRoleRequest;
 use Modules\Administration\Http\Requests\UpdateRoleRequest;
 use Modules\Administration\Repositories\Interfaces\PermissionRepositoryInterface;
 use Modules\Administration\Repositories\Interfaces\RoleRepositoryInterface;
+use Modules\Core\Constants\CoreConstant;
 use Modules\Core\Http\Controllers\CoreController;
 
 class RoleController extends CoreController
@@ -29,7 +30,7 @@ class RoleController extends CoreController
      */
     public function index()
     {
-        $roles = $this->roleRepository->pagination();
+        $roles = $this->roleRepository->pagination(CoreConstant::PER_PAGE_DEFAULT);
         return view('administration::role.index', compact('roles'));
     }
 
@@ -64,7 +65,19 @@ class RoleController extends CoreController
      * @param int $id
      * @return Application|Factory|View|void
      */
-    public function edit($id)
+    public function show(int $id)
+    {
+        if (!empty($role = $this->roleRepository->find($id))) {
+            return view('administration::role.show', compact('role'));
+        }
+        abort(404);
+    }
+
+    /**
+     * @param int $id
+     * @return Application|Factory|View|void
+     */
+    public function edit(int $id)
     {
         if ($role = $this->roleRepository->find($id)) {
             $permissions = $this->permissionRepository->all();

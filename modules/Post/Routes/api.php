@@ -14,5 +14,6 @@ use Illuminate\Http\Request;
 */
 Route::prefix('v1')->group(function () {
     Route::get('/posts', 'PostController@posts')->name('api.posts');
-    Route::get('/post/{id}', 'PostController@post')->name('api.posts');
+//    Route::get('/post/{id}', 'PostController@post')->where('id', '[0-9]+')->name('api.post');
+    Route::get('/post/{slug}', 'PostController@postBySlug')->where('id', '[a-z0-9\-]+')->name('api.post_by_slug');
 });

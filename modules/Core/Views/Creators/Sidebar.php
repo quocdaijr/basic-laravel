@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\Views;
+namespace Modules\Core\Views\Creators;
 
 use Maatwebsite\Sidebar\Presentation\SidebarRenderer;
 use Modules\Core\Supports\AdminSidebar;
 
-class SidebarViewCreator
+class Sidebar
 {
     /**
      * @param AdminSidebar $sidebar

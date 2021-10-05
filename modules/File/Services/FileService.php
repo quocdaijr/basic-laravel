@@ -5,62 +5,132 @@ namespace Modules\File\Services;
 use Auth;
 use File;
 use Illuminate\Contracts\Filesystem\Factory;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\UploadedFile;
+use Image;
 use Modules\Core\Constants\CoreConstant;
+use Modules\File\Constants\FileConstant;
+use Modules\File\Jobs\ResizeImage;
 use Modules\File\Repositories\Interfaces\FileRepositoryInterface;
 use Str;
 
 class FileService
 {
+    private $disk;
+
     public function __construct(
         protected Factory                 $filesystem,
         protected FileRepositoryInterface $fileRepository
     )
     {
+        $this->disk = $this->filesystem->disk($this->getConfigFilesystem());
     }
 
     public function store(UploadedFile $file)
     {
-        $path = date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . date('d') .
-            DIRECTORY_SEPARATOR . Str::slug(File::name($file->getClientOriginalName())) .
-            '-' . time() . '.' . $file->getClientOriginalExtension();
+        $fileExtension = !empty($file->getClientOriginalExtension())
+            ? $file->getClientOriginalExtension()
+            : $file->guessExtension();
+
+        $filename = !empty($file->getClientOriginalExtension())
+            ? $file->getClientOriginalName()
+            : rtrim($file->getClientOriginalName(), '.') . '.' . $file->guessExtension();
+
+        $basename = File::name($filename);
+
+        $path = $this->getRawFolderName() . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR
+            . date('m') . DIRECTORY_SEPARATOR . date('d') . DIRECTORY_SEPARATOR
+            . Str::slug($basename) . '-' . time() . '.' . $fileExtension;
 
         $stream = fopen($file->getRealPath(), 'r+');
-        $saveFile = $this->filesystem->disk($this->getConfigFilesystem())->writeStream($path, $stream, [
+        $saveFile = $this->disk->writeStream($path, $stream, [
             'visibility' => 'public',
             'mimetype' => $file->getMimeType(),
         ]);
 
         if ($saveFile) {
             $data = [
-                'name' => $file->getClientOriginalName(),
-                'title' => File::name($file->getClientOriginalName()),
+                'name' => $filename,
+                'title' => $basename,
                 'status' => CoreConstant::STATUS_ACTIVE,
-                'raw_path' => $this->filesystem->disk($this->getConfigFilesystem())->getDriver()->getAdapter()->getPathPrefix() . $path,
+                'raw_path' => $this->disk->getDriver()->getAdapter()->getPathPrefix() . $path,
                 'path' => $path,
                 'where' => $this->getConfigFilesystem(),
-                'mine_type' => $file->getMimeType(),
-                'type' => $this->getTypeByMineType($file->getMimeType()),
+                'mimetype' => $file->getMimeType(),
+                'type' => $this->getTypeByMimeType($file->getMimeType()),
                 'size' => $file->getSize(),
                 'mtime' => $file->getMTime(),
                 'created_by' => Auth::id()
             ];
             $dbFile = $this->fileRepository->create($data);
+
+            if ($data['type'] == FileConstant::FILE_TYPE_IMAGE) {
+                dispatch(new ResizeImage($data['path']));
+            }
         }
         return $dbFile ?? null;
     }
 
-    public function getConfigFilesystem()
+    public function resize($path)
+    {
+        try {
+            if (!empty($path) && $this->disk->exists($path)) {
+                foreach ((array)$this->getSizes() as $name => $size) {
+                    list($width, $height) = $size;
+                    $resizePath = $this->getResizeFolderName() . DIRECTORY_SEPARATOR . $name
+                        . DIRECTORY_SEPARATOR . ltrim($path, $this->getRawFolderName() . DIRECTORY_SEPARATOR);
+                    if (!$this->disk->exists($resizePath)) {
+                        list($rawWidth, $rawHeight) = getimagesize($this->disk->path($path));
+                        $resizeWidth = ($rawWidth < $width) ? $rawWidth : $width;
+                        $resizeHeight = ($rawHeight < $height) ? $rawHeight : $height;
+                        if ($resizeWidth > $resizeHeight)
+                            $image = Image::make($this->disk->path($path))->resize($resizeWidth, null, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        else
+                            $image = Image::make($this->disk->path($path))->resize(null, $resizeHeight, function ($constraint) {
+                                $constraint->aspectRatio();
+                            });
+                        $this->disk->put($resizePath, $image->encode(), [
+                            'visibility' => 'public',
+                            'mimetype' => $this->disk->mimeType($path),
+                        ]);
+                    }
+                }
+                return true;
+            }
+            return false;
+        } catch (\Exception $e) {
+            print_r($e);
+        }
+    }
+
+    private function getConfigFilesystem()
     {
         return config('filesystems.default');
     }
 
-    public function getTypeByMineType($mine_type) {
-        $mine_types = config(CoreConstant::MODULE_NAME . '.file.config.mine_types');
+    private function getRawFolderName()
+    {
+        return config(CoreConstant::MODULE_NAME . '.file.config.raw_folder') ?? 'r';
+    }
+
+    private function getResizeFolderName()
+    {
+        return config(CoreConstant::MODULE_NAME . '.file.config.resize_folder') ?? 'i';
+    }
+
+    private function getSizes()
+    {
+        return config(CoreConstant::MODULE_NAME . '.file.config.sizes');
+    }
+
+
+    private function getTypeByMimeType($mimetype)
+    {
+        $mimetypes = config(CoreConstant::MODULE_NAME . '.file.config.mimetypes');
         $type = 'other';
-        foreach ($mine_types as $key => $value) {
-            if (in_array($mine_type, $value)) {
+        foreach ($mimetypes as $key => $value) {
+            if (in_array($mimetype, $value)) {
                 $type = $key;
                 break;
             }

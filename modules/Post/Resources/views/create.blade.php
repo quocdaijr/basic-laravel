@@ -10,11 +10,14 @@
                 @include('post::partials.editor')
             </div>
             <div class="min-w-0 p-4 text-white bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                @include('post::partials.action')
+                @include('post::partials.published-time')
                 @include('post::partials.categories')
                 @include('post::partials.tags')
                 @include('post::partials.thumbnail')
-                @include('post::partials.published-time')
-                @include('post::partials.action')
+                @include('post::partials.cover')
+                @include('post::partials.more')
+
             </div>
         </div>
     </div>

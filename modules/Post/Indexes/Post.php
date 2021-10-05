@@ -8,7 +8,7 @@ class Post extends CoreIndex
 {
     public function __construct()
     {
-        return parent::__construct();
+        return parent::__construct('id');
     }
 
     public function index(): string
@@ -201,7 +201,7 @@ class Post extends CoreIndex
                     'type' => [
                         'type' => 'keyword',
                     ],
-                    'mine_type' => [
+                    'mimetype' => [
                         'type' => 'keyword',
                     ],
                     'where' => [
