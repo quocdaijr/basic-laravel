@@ -5,6 +5,5 @@
     "Category": true,
     "Post": true,
     "File": true,
-    "Tag": true,
-    "Api": true
+    "Tag": true
 }

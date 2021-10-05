@@ -5,7 +5,7 @@ namespace Modules\Core\Indexes;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\InvalidArgumentException;
-use Exception;
+use Elasticsearch\Common\Exceptions\RuntimeException;
 use Modules\Core\Constants\CoreConstant;
 
 abstract class CoreIndex implements IndexInterface
@@ -21,6 +21,9 @@ abstract class CoreIndex implements IndexInterface
         protected $_timeout = '1s'
     )
     {
+        if (!env('ALLOWED_ELASTICSEARCH', false))
+            throw new RuntimeException('Elasticsearch is not allowed');
+
         if (empty($this->server()))
             throw new InvalidArgumentException('Please provide elasticsearch SERVER config');
 
@@ -158,7 +161,7 @@ abstract class CoreIndex implements IndexInterface
         ];
     }
 
-    public function scrollSearch($params):array
+    public function scrollSearch($params): array
     {
         if ($this->checkPrerequisiteBeforeExecute()) {
             if (empty($params['index']))
