@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_ST_URL'),
+            'url' => !empty(env('APP_ST_URL')) ? env('APP_ST_URL') : env('APP_URL') . '/storage',
             'visibility' => 'public',
             'cache' => [
                 'store' => 'redis',
