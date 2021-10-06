@@ -33,7 +33,7 @@ class PostController extends CoreController
 
     /**
      * Display a listing of the resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -43,7 +43,7 @@ class PostController extends CoreController
 
     /**
      * Show the form for creating a new resource.
-     * @return Renderable
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -54,7 +54,7 @@ class PostController extends CoreController
     /**
      * Store a newly created resource in storage.
      * @param CreatePostRequest $request
-     * @return Renderable
+     * @return mixed
      */
     public function store(CreatePostRequest $request)
     {
@@ -92,11 +92,14 @@ class PostController extends CoreController
     /**
      * Show the specified resource.
      * @param int $id
-     * @return Renderable
+     * @return Application|Factory|View|void
      */
-    public function show($id)
+    public function show(int $id)
     {
-        return view('post::show');
+        if (!empty($post = $this->postRepository->find($id))) {
+            return view('post::show', compact('post'));
+        }
+        abort(404);
     }
 
 
@@ -182,10 +185,20 @@ class PostController extends CoreController
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Renderable
+     * @return RedirectResponse|void
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        //
+        if (!empty($this->postRepository->find($id))) {
+            $data = [
+                'status' => CoreConstant::STATUS_DELETED
+            ];
+            $this->postRepository->update($id, $data);
+
+            dispatch(new IndexPostElasticsearch($id));
+
+            return redirect()->route('post.index')->with('success', 'Delete success');
+        }
+        abort(404);
     }
 }
