@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 trait RegisterRouteTrait
 {
     public function registerApiRoute($moduleName, $controllerNamespace) {
-        if (config('modules.api_url') !== null) {
+        if (!empty(config('modules.api_url'))) {
             Route::domain(config('modules.api_url'))
                 ->middleware(['api'])
                 ->namespace($controllerNamespace)
