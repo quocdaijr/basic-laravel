@@ -116,6 +116,6 @@
     </div>--}}
     <div class="px-4 py-3 mt-2 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800 h-full">
 {{--        <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">Dữ liệu covid (From tuoitre.vn)</h4>--}}
-        <iframe src="https://tuoitre.vn/cap-nhat-so-lieu-tiem-vac-xin-va-ca-mac-covid-19-tai-viet-nam-20210510170100892.htm" class="w-full h-full"></iframe>
+{{--        <iframe src="https://tuoitre.vn/cap-nhat-so-lieu-tiem-vac-xin-va-ca-mac-covid-19-tai-viet-nam-20210510170100892.htm" class="w-full h-full"></iframe>--}}
     </div>
 @endsection
