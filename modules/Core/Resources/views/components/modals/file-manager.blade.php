@@ -411,15 +411,15 @@
                     switch (this.type) {
                         case constData.resourceType.image:
                             this.selected.forEach(function (value) {
-                                html += '<figure class="file-figure image-figure image" contenteditable="true">' +
-                                    '<img class="image-import" src="' + value.url + '" alt="' + value.title + '" width="100%"/>' +
+                                html += '<figure class="file-figure image-figure image">' +
+                                    '<img class="image-import" src="' + value.url + '" alt="' + value.title + '" width="100%" crossorigin="anonymous"/>' +
                                     '<figcaption>' + value.title + '</figcaption>' +
                                     '</figure>'
                             })
                             break
                         case constData.resourceType.video:
                             this.selected.forEach(function (value) {
-                                html += '<figure class="file-figure video-figure" contenteditable="true">' +
+                                html += '<figure class="file-figure video-figure">' +
                                     '<video class="video-import" id="video_' + value.id + '" controls="controls" crossorigin="anonymous"> ' +
                                     '<source src="' + value.url + '" type="' + value.mimetype + '" />' +
                                     'Your browser does not support embedded videos.' +
@@ -431,7 +431,7 @@
                         default:
                             this.selected.forEach(function (value) {
                                 html += '<figure class="file-figure other-figure">' +
-                                    '<a class="file-import" href="' + value.url + '">' + value.title + '</a>' +
+                                    '<a class="other-import" href="' + value.url + '">' + value.title + '</a>' +
                                     '<figcaption>' + value.title + '</figcaption>' +
                                     '</figure>'
                             })
