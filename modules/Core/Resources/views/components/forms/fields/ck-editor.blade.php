@@ -10,7 +10,7 @@
     @enderror
 </label>
 @push('scripts')
-    <script src="{{mix('modules/core/js/ck-editor.js')}}"></script>
+    <script src="{{mix('assets/modules/core/js/ck-editor.js')}}"></script>
     <script>
         ClassicEditor.create(document.querySelector('#{{$name}}'), {
             // plugins: [SimpleUploadAdapter],

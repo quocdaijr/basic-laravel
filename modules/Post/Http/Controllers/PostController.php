@@ -3,7 +3,6 @@
 namespace Modules\Post\Http\Controllers;
 
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -191,7 +190,7 @@ class PostController extends CoreController
     {
         if (!empty($this->postRepository->find($id))) {
             $data = [
-                'status' => CoreConstant::STATUS_DELETED
+                'status' => PostConstant::STATUS_TRASH
             ];
             $this->postRepository->update($id, $data);
 

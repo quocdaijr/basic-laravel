@@ -102,5 +102,5 @@
 </label>
 
 @push('scripts')
-    <script src="{{mix('modules/core/js/forms/multiple-select.js')}}"></script>
+    <script src="{{mix('assets/modules/core/js/forms/multiple-select.js')}}"></script>
 @endpush

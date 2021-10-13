@@ -36,6 +36,7 @@ class BuildTagSidebarListener extends BuildSidebarListener
                     $item->authorize(
                         $this->checkAccess((array)'tag.index')
                     );
+                    $item->weight(3);
                 });
             });
         });

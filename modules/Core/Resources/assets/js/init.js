@@ -1,3 +1,18 @@
+window.constData = {
+    status: {
+        active: 10,
+        disable: 20,
+        deleted: 30,
+    },
+    resourceType: {
+        image: 'image',
+        video: 'video',
+        document: 'document',
+        other: 'other',
+    }
+}
+
+
 window.data = function () {
     function getThemeFromLocalStorage() {
         // if user already changed the theme, use it
@@ -190,11 +205,32 @@ window.copyToInput = function (fromId, toId, type = '') {
     // }
 }
 
-window.alertConfirm = function (form_id,
-                                title = 'Are you sure?',
-                                text = 'You won\'t be able to revert this!',
-                                btn_confirm_text = 'Yes, do it!',
-                                btn_cancel_text = 'No, cancel!'
+window.alertConfirm = async function (target = 'body', title = 'Are you sure?',
+                                      text = 'You won\'t be able to revert this!',
+                                      btn_confirm_text = 'Yes, do it!',
+                                      btn_cancel_text = 'No, cancel!',
+) {
+    return await Swal.fire({
+        title: title,
+        text: text,
+        icon: 'warning',
+        target: target,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: btn_confirm_text,
+        cancelButtonText: btn_cancel_text,
+        reverseButtons: true
+    }).then((result) => {
+        return result.isConfirmed
+    })
+}
+
+window.alertFormSubmitConfirm = function (form_id,
+                                          title = 'Are you sure?',
+                                          text = 'You won\'t be able to revert this!',
+                                          btn_confirm_text = 'Yes, do it!',
+                                          btn_cancel_text = 'No, cancel!'
 ) {
     Swal.fire({
         title: title,
@@ -311,6 +347,28 @@ window.formatCapacity = function (capacity, unit = 'byte', decimals = 2) {
     return parseFloat((capacity / Math.pow(k, i)).toFixed(dm)) + ' ' + units[i];
 }
 
+window.convertJsonToString = function (json) {
+    return JSON.stringify(json).replaceAll('"', '\'')
+}
+
+window.getHtmlStatus = function (status) {
+    let html
+    switch (status) {
+        case constData.status.active:
+            html = '<span class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">Active</span>'
+            break;
+        case constData.status.disable:
+            html = '<span class="px-2 py-1 font-semibold leading-tight text-gray-700 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-100">Disable</span>"'
+            break;
+        case constData.status.deleted:
+            html = '<span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">Deleted</span>'
+            break;
+        default:
+            html = "<span class=\"px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100\">Unknown</span>"
+    }
+    return html
+}
+
 window.ajaxUpload = async function (file, filename = '', type = '') {
     let formData = new FormData();
     if (filename !== '')
@@ -330,11 +388,17 @@ window.ajaxUpdateFile = async function (id, data = {}) {
     return await axios.put('/file/edit/' + id, data)
 }
 
+window.ajaxDeleteFile = async function (id) {
+
+    return await axios.delete('/file/' + id)
+}
+
 window.ajaxGetFiles = async function (params = {}) {
 
     return await axios.get('/file/files', {
         params: {
             txt: params.txt || "",
+            status: params.status || "",
             type: params.type || "",
             page: params.page || 1,
             perPage: params.perPage || 10,

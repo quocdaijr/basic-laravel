@@ -9,10 +9,6 @@ return [
                 'name' => 'file.index'
             ],
             [
-                'title' => 'File Upload',
-                'name' => 'file.upload'
-            ],
-            [
                 'title' => 'File Create',
                 'name' => 'file.create'
             ],

@@ -3,8 +3,10 @@
 namespace Modules\File\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
 use Modules\File\Entities\File;
+use Modules\File\Listeners\BuildFileSidebarListener;
 use Modules\File\Repositories\Eloquent\FileRepository;
 use Modules\File\Repositories\Interfaces\FileRepositoryInterface;
 
@@ -47,6 +49,11 @@ class FileServiceProvider extends ServiceProvider
         $this->app->bind(FileRepositoryInterface::class, function () {
             return new FileRepository(new File());
         });
+
+        $this->app['events']->listen(
+            BuildSidebarEvent::class,
+            BuildFileSidebarListener::class
+        );
     }
 
     /**

@@ -32,6 +32,7 @@ class BuildCategorySidebarListener extends BuildSidebarListener
                     $item->authorize(
                         $this->checkAccess((array)'category.index')
                     );
+                    $item->weight(2);
                 });
             });
         });

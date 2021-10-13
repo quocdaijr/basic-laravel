@@ -104,6 +104,26 @@ class FileService
         }
     }
 
+    public function delete($id)
+    {
+        $dbFile = $this->fileRepository->find($id);
+        if (!empty($dbFile->path)) {
+            if ($this->disk->exists($dbFile->path)) {
+                $this->disk->delete($dbFile->path);
+            }
+            foreach ((array)$this->getSizes() as $name => $size) {
+                $resizePath = $this->getResizeFolderName() . DIRECTORY_SEPARATOR . $name
+                    . DIRECTORY_SEPARATOR . ltrim($dbFile->path, $this->getRawFolderName() . DIRECTORY_SEPARATOR);
+                if ($this->disk->exists($resizePath)) {
+                    $this->disk->delete($resizePath);
+                }
+            }
+            if ($this->fileRepository->update($id, ['status' => CoreConstant::STATUS_DELETED]))
+                return true;
+        }
+        return false;
+    }
+
     private function getConfigFilesystem()
     {
         return config('filesystems.default');

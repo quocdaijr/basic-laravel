@@ -34,15 +34,6 @@ class FileController extends CoreController
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
-    public function create()
-    {
-        return view('file::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param CreateFileRequest $request
      * @return JsonResponse
@@ -73,26 +64,6 @@ class FileController extends CoreController
     }
 
     /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('file::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('file::edit');
-    }
-
-    /**
      * Update the specified resource in storage.
      * @param UpdateFileRequest $request
      * @param int $id
@@ -111,10 +82,7 @@ class FileController extends CoreController
                 $data['status'] = $request->status;
 
             $this->fileRepository->update($id, $data);
-            if ($request->ajax())
-                return response()->json(['success' => true]);
-            else
-                return redirect()->route('file.index')->with('success', 'Update success');
+            return response()->json(['success' => true]);
         }
         abort(404);
     }
@@ -122,22 +90,27 @@ class FileController extends CoreController
     /**
      * Remove the specified resource from storage.
      * @param int $id
-     * @return Renderable
+     * @return JsonResponse|RedirectResponse|void
      */
     public function destroy($id)
     {
-        //
+        if ($this->fileRepository->find($id)) {
+            $deleted = $this->fileService->delete($id);
+            return response()->json(['success' => $deleted]);
+        }
+        abort(404);
     }
 
     public function files(Request $request)
     {
         $page = $request->page ?? 1;
         $perPage = $request->perPage ?? 20;
-        $params = [
-            ['status' => CoreConstant::STATUS_ACTIVE]
-        ];
+        $params = [];
         if (!empty($request->txt)) {
             $params[] = ['name', 'like', "%$request->txt%"];
+        }
+        if (!empty($request->status)) {
+            $params[] = ['status', $request->status];
         }
         if (!empty($request->type)) {
             $params[] = ['type', $request->type];

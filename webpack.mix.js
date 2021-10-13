@@ -20,6 +20,9 @@ mix.options({
     }
 });
 
+const dotenvExpand = require('dotenv-expand');
+dotenvExpand(require('dotenv').config({path: '../../.env'/*, debug: true*/}));
+
 // Run all webpack.mix.js in app
 glob.sync('./modules/**/**/webpack.mix.js').forEach(item => require(item));
 

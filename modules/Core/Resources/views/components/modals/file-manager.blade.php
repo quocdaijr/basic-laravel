@@ -11,25 +11,30 @@
         >Open File Manager
         </button>
 
-        <div class="overflow-auto bg-gray-400" style="background-color: rgba(0,0,0,.5);"
+        <div class="modal-file-manager-{{$uniqueId}} overflow-auto bg-gray-400"
+             style="background-color: rgba(0,0,0,.5);"
+             id="modal_file_manager_{{$uniqueId}}"
              x-show="showModal"
              :class="{ 'absolute inset-0 z-50 flex items-center justify-center': showModal }"
+             aria-labelledby="modal-title" role="dialog"
         >
             <div
                 class="flex flex-col h-5/6 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 w-11/12 md:w-10/12 mx-auto rounded shadow-lg py-4 text-left px-6"
+                role="document"
                 x-show="showModal"
-                @click.away="closeModalFileManager()"
+                {{--                @click.away="closeModalFileManager()"--}}
                 x-transition:enter="transition ease-out duration-100"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"
             >
                 <div class="flex justify-between items-center pb-5">
                     <p class="text-2xl font-bold capitalize" x-text="type + ' Manager'"></p>
-                    <div class="cursor-pointer z-50" @click="closeModalFileManager()">
-                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                             viewBox="0 0 18 18">
-                            <path
-                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                    <div class="cursor-pointer z-50 -mt-2 -mr-2" @click="closeModalFileManager()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20"
+                             fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"/>
                         </svg>
                     </div>
                 </div>
@@ -92,6 +97,7 @@
                                                 <video x-bind:src="item.url"
                                                        class="max-h-full max-w-full mx-auto"
                                                        x-show="item.type === 'video'"
+                                                       controls
                                                 ></video>
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                      class="h-20 w-20 mx-auto" fill="none"
@@ -122,7 +128,7 @@
                                      class="file-preview image-preview max-h-24 mx-auto hidden"
                                      alt=""/>
                                 <video x-bind:src="file.url || ''"
-                                       class="file-preview video-preview max-h-36 mx-auto hidden"></video>
+                                       class="file-preview video-preview max-h-24 mx-auto hidden" controls></video>
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                      class="file-preview document-preview h-20 w-20 mx-auto hidden" fill="none"
                                      viewBox="0 0 24 24" stroke="currentColor"
@@ -170,11 +176,16 @@
                                         x-text="file.updated_at ? new Date(file.updated_at).toLocaleString() : ''"></span>
                                 </p>
                             </div>
-                            <div class="flex-grow justify-end flex flex-col items-center">
+                            <div class="flex-grow justify-center flex items-center">
                                 <button type="button"
-                                        class="h-12 px-4 py-3 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
+                                        class="h-10 mr-1 px-4 rounded-lg text-white bg-blue-500 hover:bg-blue-600"
                                         @click="updateFile()"
                                 >Update
+                                </button>
+                                <button type="button"
+                                        class="h-10 ml-1 px-4 rounded-lg text-white bg-red-500 hover:bg-red-600"
+                                        @click="deleteFile()"
+                                >Delete
                                 </button>
                             </div>
                         </div>
@@ -243,7 +254,7 @@
     <script>
         window.dataFileManager{{$uniqueId}} = function () {
             let txtSearchElement = document.getElementById('txtSearchFileManager{{$uniqueId}}');
-            let formUpdateFileElement = document.getElementById('formUpdateFile{{$uniqueId}}')
+            let formUpdateFileElement = document.getElementById('formUpdateFile{{$uniqueId}}');
             return {
                 showModal: false,
                 files: [],
@@ -256,12 +267,6 @@
                 currentPage: 1,
                 perPage: 12,
                 txtSearch: '',
-                init() {
-                    this.syncFiles()
-                },
-                convertJsonToString(json) {
-                    return JSON.stringify(json).replaceAll('"', '\'')
-                },
                 toggleModalFileManager() {
                     this.showModal = !this.showModal
                 },
@@ -277,6 +282,7 @@
                 syncFiles() {
                     ajaxGetFiles({
                         type: this.type,
+                        status: constData.status.active,
                         txt: this.txtSearch,
                         page: this.currentPage,
                         perPage: this.perPage
@@ -289,6 +295,7 @@
                     }).catch(err => {
                         console.log(err)
                     });
+                    this.clearSelected()
                 },
                 uploadFiles(element) {
                     let files = element.files;
@@ -327,6 +334,27 @@
                         });
                     }
                 },
+                deleteFile() {
+                    if (this.file.id) {
+                        alertConfirm('#modal_file_manager_{{$uniqueId}}').then(confirm => {
+                            if (confirm) {
+                                ajaxDeleteFile(this.file.id).then(res => {
+                                    if (res.data.success) {
+                                        this.file = {}
+                                        this.syncFiles()
+                                        formUpdateFileElement.classList.add("hidden")
+                                        toastrNotification('success', 'Update Success')
+                                    } else {
+                                        toastrNotification('error', 'Update Failed. Please retry later')
+                                    }
+                                }).catch(err => {
+                                    console.log(err)
+                                });
+                            }
+                            return false
+                        })
+                    }
+                },
                 nextPage() {
                     this.currentPage += 1;
                     this.syncFiles()
@@ -361,27 +389,58 @@
                         formUpdateFileElement.classList.add("hidden")
                     }
                 },
+                clearSelected() {
+                    let checkboxes = document.querySelectorAll('input[name=fileSelected]')
+                    for (let i = 0; i < checkboxes.length; i++) {
+                        checkboxes[i].checked = false
+                    }
+                },
                 isHasFile() {
                     return this.files !== [];
                 },
                 setSelected() {
                     let checkboxes = document.querySelectorAll('input[name=fileSelected]:checked')
-                    console.log(checkboxes)
                     for (let i = 0; i < checkboxes.length; i++) {
                         this.selected.push(JSON.parse(checkboxes[i].getAttribute('data-value').replaceAll("'", "\"")))
                         checkboxes[i].checked = false
                     }
-                    console.log(this.selected)
                 },
                 insertToTinyMCE(editorId) {
                     this.setSelected()
                     let html = ''
-                    this.selected.forEach(function (value) {
-                        html += '<img width="100%" src="' + value.url + '" />'
-                    })
+                    switch (this.type) {
+                        case constData.resourceType.image:
+                            this.selected.forEach(function (value) {
+                                html += '<figure class="file-figure image-figure image" contenteditable="true">' +
+                                    '<img class="image-import" src="' + value.url + '" alt="' + value.title + '" width="100%"/>' +
+                                    '<figcaption>' + value.title + '</figcaption>' +
+                                    '</figure>'
+                            })
+                            break
+                        case constData.resourceType.video:
+                            this.selected.forEach(function (value) {
+                                html += '<figure class="file-figure video-figure" contenteditable="true">' +
+                                    '<video class="video-import" id="video_' + value.id + '" controls="controls" crossorigin="anonymous"> ' +
+                                    '<source src="' + value.url + '" type="' + value.mimetype + '" />' +
+                                    'Your browser does not support embedded videos.' +
+                                    '</video>' +
+                                    '<figcaption>' + value.title + '</figcaption>' +
+                                    '</figure>'
+                            })
+                            break
+                        default:
+                            this.selected.forEach(function (value) {
+                                html += '<figure class="file-figure other-figure">' +
+                                    '<a class="file-import" href="' + value.url + '">' + value.title + '</a>' +
+                                    '<figcaption>' + value.title + '</figcaption>' +
+                                    '</figure>'
+                            })
+
+                    }
                     tinymce.get(editorId).insertContent(html);
                     this.selected = [];
                     this.closeModalFileManager()
+                    toastrNotification('success', 'Insert to editor is success')
                 },
                 insertForInputUploadImage() {
                     this.setSelected()
@@ -392,14 +451,15 @@
                     document.getElementById(inputId).setAttribute('value', this.selected[0].id || '')
 
                     if (this.selected[0].url && this.selected[0].id) {
-                        document.getElementsByClassName(previewId)[0].removeAttribute('style')
-                        document.getElementsByClassName(inputId)[0].style.display = 'none'
+                        document.getElementsByClassName(previewId)[0].classList.remove("hidden")
+                        document.getElementsByClassName(inputId)[0].classList.add("hidden")
                     } else {
-                        document.getElementsByClassName(previewId)[0].style.display = 'none'
-                        document.getElementsByClassName(inputId)[0].removeAttribute('style')
+                        document.getElementsByClassName(previewId)[0].classList.add("hidden")
+                        document.getElementsByClassName(inputId)[0].classList.remove("hidden")
                     }
                     this.selected = [];
                     this.closeModalFileManager()
+                    toastrNotification('success', 'Select file is success')
                 },
             }
         }

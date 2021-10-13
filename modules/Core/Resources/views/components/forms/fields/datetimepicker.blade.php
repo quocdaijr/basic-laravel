@@ -40,11 +40,11 @@
 </label>
 
 @push('stylesheets')
-    <link rel="stylesheet" href="{{ mix('modules/core/css/flatpickr.css') }}">
+    <link rel="stylesheet" href="{{ mix('assets/modules/core/css/flatpickr.css') }}">
 @endpush
 
 @push("scripts")
-    <script src="{{mix('modules/core/js/flatpickr.js')}}"></script>
+    <script src="{{mix('assets/modules/core/js/flatpickr.js')}}"></script>
     <script>
         let published_time_picker = flatpickr("#flatpickr_{{$options['id']}}", {
             enableTime: true,

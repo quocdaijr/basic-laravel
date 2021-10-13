@@ -16,25 +16,31 @@
                        ]"
 />
 @push('scripts')
-    <script src="{{mix('node_modules/tinymce/tinymce.js')}}"></script>
+    <script src="{{mix('assets/node_modules/tinymce/tinymce.js')}}"></script>
     <script>
         tinymce.init({
             selector: '#{{$name}}',
+            // max_width: '100%',
             min_height: 300,
-            autosave_ask_before_unload: false,
             powerpaste_allow_local_images: true,
             plugins: [
                 'code autoresize advlist anchor autolink codesample fullscreen help image imagetools',
-                ' lists link media noneditable preview',
-                ' searchreplace table template visualblocks wordcount'
+                ' lists link media noneditable preview paste',
+                ' searchreplace table template visualblocks wordcount media emoticons autosave'
             ],
             templates: [],
             toolbar:
-                'code insertfile undo redo | bold italic | forecolor backcolor | template codesample ' +
-                '| alignleft aligncenter alignright alignjustify | bullist numlist | link insertImage',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                'code | preview | undo redo | paste pastetext | styleselect | bold italic | forecolor backcolor | ' +
+                'template codesample | alignleft aligncenter alignright alignjustify | bullist numlist | ' +
+                'emoticons link | insertImage insertMedia',
+
+            contextmenu: "",
+
+            paste_as_text: true,
+
             codesample_global_prismjs: true,
-            content_css: '{{ mix('node_modules/prismjs/themes/prism-tomorrow.css') }}',
+            content_css: '{{ mix('assets/node_modules/prismjs/themes/prism-tomorrow.css') }}',
+            imagetools_cors_hosts: [ '{{parse_url(env('APP_ST_URL'), PHP_URL_HOST)}}', '{{parse_url(env('APP_URL'), PHP_URL_HOST)}}' ],
             image_reuse_filename: true,
             images_upload_handler: function (blobInfo, success, failure, progress) {
                 let filename;
@@ -56,10 +62,21 @@
             convert_urls: false,
             setup: function (editor) {
                 editor.ui.registry.addButton('insertImage', {
-                    icon: 'image',
+                    icon: 'gallery',
                     onAction: function () {
                         if (document.body.contains(document.getElementById('btn_modal_file_manager_for_editor'))) {
                             document.getElementById('btn_modal_file_manager_for_editor').setAttribute('data-type', 'image')
+                            document.getElementById('btn_modal_file_manager_for_editor').click()
+                        } else {
+                            console.error("Not found file manager dialog")
+                        }
+                    }
+                })
+                editor.ui.registry.addButton('insertMedia', {
+                    icon: 'embed',
+                    onAction: function () {
+                        if (document.body.contains(document.getElementById('btn_modal_file_manager_for_editor'))) {
+                            document.getElementById('btn_modal_file_manager_for_editor').setAttribute('data-type', 'video')
                             document.getElementById('btn_modal_file_manager_for_editor').click()
                         } else {
                             console.error("Not found file manager dialog")

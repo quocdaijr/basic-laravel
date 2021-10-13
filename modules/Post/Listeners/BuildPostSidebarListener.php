@@ -36,6 +36,7 @@ class BuildPostSidebarListener extends BuildSidebarListener
                     $item->authorize(
                         $this->checkAccess((array)'post.index')
                     );
+                    $item->weight(1);
                 });
             });
         });

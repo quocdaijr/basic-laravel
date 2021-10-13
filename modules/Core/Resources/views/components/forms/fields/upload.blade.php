@@ -7,7 +7,7 @@
             w-3/4 flex flex-col items-center px-4 py-4 text-blue-500 rounded-lg shadow-lg tracking-wide
             uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-gray-100 dark:text-blue-200
             dark:border-gray-600 dark:hover:text-gray-100"
-               x-show="!isHasFile()"
+               :class="{ 'hidden': isHasFile }"
         >
             <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path
@@ -17,8 +17,8 @@
             <input class="hidden" type="button" @click="selectFile()">
             <input type='hidden' id="{{$name . '_input'}}" name="{{$name}}" value="{{old($name, $oldValue)}}"/>
         </label>
-        <div x-show="isHasFile()"
-             class="{{$name . '_preview'}} relative"
+        <div class="{{$name . '_preview'}} relative"
+             :class="{ 'hidden': !isHasFile }"
         >
             <img src="{{!empty(old($name, $oldValue)) ? ($options['url'] ?? '') : ''}}"
                  id="{{$name . '_preview'}}"
@@ -54,18 +54,11 @@
             let previewTxt = '{{$name . '_preview'}}';
             let inputTxt = '{{$name . '_input'}}';
             let previewId = document.getElementById(previewTxt)
-            let previewClass = document.getElementsByClassName(previewTxt)[0]
             let inputId = document.getElementById(inputTxt)
-            let inputClass = document.getElementsByClassName(inputTxt)[0]
             return {
+                isHasFile: false,
                 init() {
-                    if (this.isHasFile()) {
-                        inputClass.style.display = 'none'
-                        previewClass.removeAttribute('style')
-                    } else {
-                        inputClass.removeAttribute('style')
-                        previewClass.style.display = 'none'
-                    }
+                    this.validateFileExits()
                 },
                 selectFile() {
                     if (document.body.contains(btnModal)) {
@@ -77,16 +70,15 @@
                         console.error("Not found file manager dialog")
                     }
                 },
-                isHasFile() {
+                validateFileExits() {
                     let url = previewId.getAttribute('src');
                     let id = inputId.getAttribute('value');
-                    return url !== '' && id !== '';
+                    this.isHasFile = url !== '' && id !== '';
                 },
                 clearFile() {
                     inputId.setAttribute('value', '')
                     previewId.setAttribute('src', '')
-                    inputClass.removeAttribute('style')
-                    previewClass.style.display = 'none'
+                    this.isHasFile = false
                 }
             };
         }

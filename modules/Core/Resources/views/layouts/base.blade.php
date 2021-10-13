@@ -9,21 +9,21 @@
         rel="stylesheet"
     />
     {{-- Laravel Mix - CSS File --}}
-    <link rel="stylesheet" href="{{ mix('modules/core/css/core.css') }}">
-    <link rel="stylesheet" href="{{ mix('modules/core/css/sweetalert-theme.css') }}">
-    <link rel="stylesheet" href="{{ mix('modules/core/css/toastr.css') }}">
+    <link rel="stylesheet" href="{{ mix('assets/modules/core/css/core.css') }}">
+    <link rel="stylesheet" href="{{ mix('assets/modules/core/css/sweetalert-theme.css') }}">
+    <link rel="stylesheet" href="{{ mix('assets/modules/core/css/toastr.css') }}">
     @stack('stylesheets')
     {{-- Laravel Mix - Header JS File --}}
-    <script src="{{ mix('modules/core/js/sweetalert.js') }}"></script>
-    <script src="{{ mix('modules/core/js/toastr.js') }}"></script>
+    <script src="{{ mix('assets/modules/core/js/sweetalert.js') }}"></script>
+    <script src="{{ mix('assets/modules/core/js/toastr.js') }}"></script>
 </head>
 <body>
 @yield('common')
 @include('core::vendor.sweetalert.alert')
 
 {{-- Laravel Mix - JS File --}}
-<script src="{{ mix('modules/core/js/init.js') }}"></script>
-<script src="{{ mix('modules/core/js/core.js') }}" defer></script>
+<script src="{{ mix('assets/modules/core/js/init.js') }}"></script>
+<script src="{{ mix('assets/modules/core/js/core.js') }}" defer></script>
 @stack('scripts')
 </body>
 </html>

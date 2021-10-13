@@ -92,7 +92,7 @@
                                     {!! Form::open(['method' => 'DELETE', 'route' => ['post.destroy', $post->id], 'id' => 'form_delete_' . $post->id]) !!}
                                     <button
                                         class="flex items-center justify-between my-2 mx-1 px-2 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-full active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple dark:text-gray-300"
-                                        onclick="alertConfirm('form_delete_{{$post->id}}', 'Are you sure to delete this!')"
+                                        onclick="alertFormSubmitConfirm('form_delete_{{$post->id}}', 'Are you sure to delete this!')"
                                         type="button"
                                         aria-label="Delete">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"

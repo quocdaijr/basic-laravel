@@ -14,10 +14,10 @@
 </label>
 
 @push('stylesheets')
-    <link rel="stylesheet" href="{{ mix('modules/core/css/slim-select.css') }}">
+    <link rel="stylesheet" href="{{ mix('assets/modules/core/css/slim-select.css') }}">
 @endpush
 @push('scripts')
-    <script src="{{mix('modules/core/js/slim-select.js')}}"></script>
+    <script src="{{mix('assets/modules/core/js/slim-select.js')}}"></script>
     <script>
         let tag = new SlimSelect({
             select: '#{{$options['id'] ?? ''}}',

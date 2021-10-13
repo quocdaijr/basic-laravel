@@ -17,8 +17,7 @@ class IndexPostElasticsearch extends CoreJob
      * @return void
      */
     public function __construct(
-        protected $id,
-
+        protected $id
     )
     {
     }

@@ -1,13 +1,13 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    // mode: 'jit',
+    mode: 'jit',
     darkMode: 'class',
     purge: [
-        // './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        // './storage/framework/views/*.php',
-        // './resources/views/**/*.blade.php',
-        // './modules/**/*.php',
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './modules/*',
     ],
 
     theme: {
