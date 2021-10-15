@@ -64,4 +64,29 @@ class User extends Authenticatable
     {
         $this->notify(new ResetPasswordNotification($token));
     }
+
+    public function getProfileFullNameAttribute()
+    {
+        return $this->attributes['profile_full_name'] ?? "Noname";
+    }
+
+    public function getProfileGenderAttribute()
+    {
+        return $this->attributes['profile_gender'] ?? "Unknown";
+    }
+
+    public function getProfileBirthdayAttribute()
+    {
+        return $this->attributes['profile_birthday'] ?? "Unknown";
+    }
+
+    public function getProfileAddressAttribute()
+    {
+        return $this->attributes['profile_address'] ?? "Unknown";
+    }
+
+    public function getProfilePhotoUrlAttribute()
+    {
+        return !empty($this->attributes['profile_photo_url']) ? getUrlFile($this->attributes['profile_photo_url']) : '';
+    }
 }
