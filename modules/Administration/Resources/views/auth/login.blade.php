@@ -29,15 +29,20 @@
                         <div class="flex mt-6 text-sm">
                             <label class="flex items-center dark:text-gray-400">
                                 <input type="checkbox"
-                                       class="text-purple-600 rounded-md border-indigo-300 focus:ring focus:ring-opacity-50 focus:border-indigo-300 focus:ring-indigo-200 dark:border-gray-600 dark:text-gray-300 dark:bg-gray-700">
+                                       name="remember"
+                                       class="text-purple-600 rounded-md border-indigo-300 focus:ring focus:ring-opacity-50
+                                       focus:border-indigo-300 focus:ring-indigo-200 dark:border-gray-600
+                                       dark:text-gray-300 dark:bg-gray-700">
                                 <span class="ml-2">Remember me?</span>
                             </label>
                         </div>
                         <div class="my-4 text-sm text-center">
                             <button type="submit"
-                                    class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                            >
-                                Log in
+                                    class="block w-full px-4 py-2 mt-4 text-sm font-medium leading-5 text-center
+                                    text-white transition-colors duration-150 bg-purple-600 border border-transparent
+                                    rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none
+                                    focus:shadow-outline-purple"
+                            >Log in
                             </button>
                         </div>
                         {!! Form::close() !!}

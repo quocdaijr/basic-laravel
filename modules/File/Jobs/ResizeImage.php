@@ -2,11 +2,14 @@
 
 namespace Modules\File\Jobs;
 
+use Modules\Core\Constants\QueueConstant;
 use Modules\Core\Jobs\CoreJob;
 use Modules\File\Services\FileService;
 
 class ResizeImage extends CoreJob
 {
+    public $queue = QueueConstant::QUEUE_RESIZE_IMAGE;
+
     /**
      * Create a new job instance.
      *

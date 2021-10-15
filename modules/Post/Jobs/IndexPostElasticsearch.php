@@ -3,6 +3,7 @@
 namespace Modules\Post\Jobs;
 
 use Exception;
+use Modules\Core\Constants\QueueConstant;
 use Modules\Core\Jobs\CoreJob;
 use Modules\Post\Constants\PostConstant;
 use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
@@ -10,6 +11,8 @@ use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 
 class IndexPostElasticsearch extends CoreJob
 {
+
+    public $queue = QueueConstant::QUEUE_ES_POST;
 
     /**
      * Create a new job instance.
@@ -30,6 +33,9 @@ class IndexPostElasticsearch extends CoreJob
      */
     public function handle(PostRepositoryInterface $postRepository, PostElasticsearchRepositoryInterface $postElasticsearchRepository)
     {
+        print_r("Begin Sleep 30s");
+        sleep(30);
+        print_r("End Sleep 30s");
         try {
             $this->writeMessage("Begin build ES for Post with id $this->id");
             $post = $postRepository->find($this->id);
