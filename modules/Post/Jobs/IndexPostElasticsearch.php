@@ -33,9 +33,6 @@ class IndexPostElasticsearch extends CoreJob
      */
     public function handle(PostRepositoryInterface $postRepository, PostElasticsearchRepositoryInterface $postElasticsearchRepository)
     {
-        print_r("Begin Sleep 30s");
-        sleep(30);
-        print_r("End Sleep 30s");
         try {
             $this->writeMessage("Begin build ES for Post with id $this->id");
             $post = $postRepository->find($this->id);

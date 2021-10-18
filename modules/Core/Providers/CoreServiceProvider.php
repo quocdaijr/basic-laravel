@@ -8,9 +8,11 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Exceptions\CoreHandler;
 use Modules\Core\Http\Middleware\Cors;
 use Modules\Core\Http\Middleware\ForceJsonResponse;
+use Modules\Core\Listeners\BuildCoreSidebarListener;
 use Modules\Core\Supports\CustomResourceRegistrar;
 use Modules\Core\Traits\RegisterDataTrait;
 use RealRashid\SweetAlert\ToSweetAlert;
@@ -62,6 +64,11 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->register(PackageSidebarServiceProvider::class);
         $this->app->register(SidebarServiceProvider::class);
         $this->app->singleton(ExceptionHandler::class, CoreHandler::class);
+
+        $this->app['events']->listen(
+            BuildSidebarEvent::class,
+            BuildCoreSidebarListener::class
+        );
     }
 
     /**
