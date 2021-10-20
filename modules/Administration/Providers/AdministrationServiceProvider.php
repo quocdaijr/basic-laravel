@@ -21,6 +21,8 @@ use Modules\Administration\Repositories\Interfaces\RoleRepositoryInterface;
 use Modules\Administration\Repositories\Interfaces\UserRepositoryInterface;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
 class AdministrationServiceProvider extends ServiceProvider
 {
@@ -63,7 +65,8 @@ class AdministrationServiceProvider extends ServiceProvider
         $router = $this->app['router'];
         $router->aliasMiddleware('auth', Authenticate::class);
         $router->aliasMiddleware('guest', RedirectIfAuthenticated::class);
-
+        $router->aliasMiddleware('permission', PermissionMiddleware::class);
+        $router->aliasMiddleware('role', RoleMiddleware::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserRepositoryInterface::class, function () {
             return new UserRepository(new User());

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
+use Route;
 
 class CoreController extends Controller
 {
@@ -23,5 +24,12 @@ class CoreController extends Controller
             }
             return $next($request);
         });
+
+        /**
+         * Middleware used to write activity log
+         * More at package: jeremykenedy/laravel-logger
+        */
+        if (Route::hasMiddlewareGroup('activity'))
+            $this->middleware('activity');
     }
 }
