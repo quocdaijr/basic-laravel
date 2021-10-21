@@ -1,2 +1,2 @@
 #!/bin/bash
-cd /var/www/html/cmsqdjr && git pull && composer install -vvv && sudo service php8.0-fpm reload && sudo supervisorctl reload
+cd /var/www/html/cmsqdjr && git pull && sudo service php8.0-fpm reload && sudo supervisorctl reload
