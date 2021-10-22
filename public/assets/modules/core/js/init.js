@@ -1016,7 +1016,7 @@ window.str2url = function (str) {
   str = str.replace(/[\u0153]/g, 'oe');
   str = str.replace(/[\u00E6]/g, 'ae');
   str = str.replace(/[\u00DF]/g, 'ss');
-  str = str.replace(/[^a-z0-9\s\'\:\/\[\]_]/g, '');
+  str = str.replace(/[^a-z0-9\s\'\:\/\[\]_-]/g, '');
   str = str.replace(/[\s\'\:\/\[\]-]+/g, ' ');
   str = str.replace(/[ ]/g, '-');
 
