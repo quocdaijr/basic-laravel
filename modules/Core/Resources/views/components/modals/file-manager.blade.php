@@ -2,7 +2,7 @@
     <section class="flex flex-wrap p-4 h-full items-center">
         <button type="button"
                 id="{{$btnOpenModalId ?? ('btn_open_modal_file_manager' . $uniqueId)}}"
-                class="bg-transparent border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold py-2 px-4 rounded-full"
+                class="border border-gray-500 hover:border-indigo-500 text-gray-500 hover:text-indigo-500 font-bold py-2 px-4 rounded-full"
                 @click="openModalFileManager()"
                 style="{{($hiddenBtnOpenModal ?? false) ? 'display:none' : ''}}"
                 data-type=""
@@ -57,7 +57,7 @@
                         </div>
                         <div class="w-full sm:w-auto relative mr-auto ml-3 mt-3 sm:mt-0">
                             <button type="button"
-                                    class="h-10 min-w-full px-4 bg-transparent py-1 rounded-lg text-white bg-green-500 hover:bg-green-700"
+                                    class="h-10 min-w-full px-4 py-1 rounded-lg text-white bg-green-500 hover:bg-green-700"
                                     @click="searchFiles()"
                             >Search
                             </button>
@@ -224,14 +224,14 @@
                         @switch($for ?? '')
                             @case('tinymce')
                             <button type="button"
-                                    class="h-12 min-w-full px-4 mr-2 bg-transparent py-3 rounded-lg text-white bg-green-500 hover:bg-green-700"
+                                    class="h-12 min-w-full px-4 mr-2 py-3 rounded-lg text-white bg-green-500 hover:bg-green-700"
                                     @click="insertToTinyMCE('{{$options['editorId'] ?? 'content'}}')"
                             >Insert To Editor
                             </button>
                             @break
                             @case('input_upload_image')
                             <button type="button"
-                                    class="h-12 min-w-full px-4 bg-transparent p-3 rounded-lg mr-2 text-white bg-green-500 hover:bg-green-600"
+                                    class="h-12 min-w-full px-4 p-3 rounded-lg mr-2 text-white bg-green-500 hover:bg-green-600"
                                     @click="insertForInputUploadImage()"
                             >Insert
                             </button>

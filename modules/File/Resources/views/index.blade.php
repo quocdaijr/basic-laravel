@@ -58,7 +58,7 @@
 
                     <div class="ml-3 mt-3 sm:mt-0">
                         <button type="button"
-                                class="h-10 min-w-full px-4 bg-transparent py-1 rounded-lg text-white bg-green-500 hover:bg-green-700"
+                                class="h-10 min-w-full px-4 py-1 rounded-lg text-white bg-green-500 hover:bg-green-700"
                                 @click="searchFiles()"
                         >Search
                         </button>

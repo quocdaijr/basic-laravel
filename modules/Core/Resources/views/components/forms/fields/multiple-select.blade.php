@@ -38,7 +38,7 @@
                             </template>
                             <div x-show="selected.length === 0" class="flex-1">
                                 <input placeholder="Select a option"
-                                       class="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"
+                                       class="p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"
                                        x-bind:value="selectedValues()">
                             </div>
                         </div>
