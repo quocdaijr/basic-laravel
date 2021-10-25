@@ -14,6 +14,8 @@ interface ElasticsearchRepositoryInterface
 
     public function create(array $data): bool;
 
+    public function updateOrCreate(array $data, array $conditions = []): bool;
+
     public function update(array $data): bool;
 
     public function delete(array $data): bool;

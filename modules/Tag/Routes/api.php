@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/tag', function (Request $request) {
-//    return $request->user();
-//});
+Route::prefix('v1')->group(function () {
+    Route::get('/tags', 'TagController@tags')->name('api.tags');
+    Route::get('/tag/{slug}', 'TagController@tagBySlug')->where('id', '[a-z0-9\-]+')->name('api.tag_by_slug');
+});
+

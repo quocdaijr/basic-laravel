@@ -8,12 +8,19 @@ use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 
 class PostController extends ApiController
 {
+    /**
+     * @param PostElasticsearchRepositoryInterface $postElasticsearchRepository
+     */
     public function __construct(
         protected PostElasticsearchRepositoryInterface $postElasticsearchRepository
     )
     {
     }
 
+    /**
+     * @param PostsRequest $request
+     * @return array
+     */
     public function posts(PostsRequest $request)
     {
         $posts = $this->postElasticsearchRepository->getFePosts($request->all());
@@ -22,6 +29,19 @@ class PostController extends ApiController
             foreach ($posts['data'] as $post) {
                 if (!empty($post['_source'])) {
                     $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
+                    $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '');
+                    if (!empty($post['_source']['categories'])) {
+                        foreach ($post['_source']['categories'] as $key_category => $category) {
+                            $post['_source']['categories'][$key_category]['thumbnail'] = getUrlFile($category['thumbnail'] ?? '', false);
+                            $post['_source']['categories'][$key_category]['cover'] = getUrlFile($category['cover'] ?? '', false);
+                        }
+                    }
+                    if (!empty($post['_source']['tags'])) {
+                        foreach ($post['_source']['tags'] as $key_tag => $tag) {
+                            $post['_source']['tags'][$key_tag]['thumbnail'] = getUrlFile($tag['thumbnail'] ?? '', false);
+                            $post['_source']['tags'][$key_tag]['cover'] = getUrlFile($tag['cover'] ?? '', false);
+                        }
+                    }
                     $data[] = $post['_source'];
                 }
             }
@@ -32,21 +52,30 @@ class PostController extends ApiController
         ];
     }
 
-    public function post($id)
-    {
-        $post = $this->postElasticsearchRepository->findByAttributes(['id' => $id]);
-        if (!empty($data = $post['_source'])) {
-            $data['thumbnail'] = getUrlFile($data['thumbnail'] ?? '');
-        }
-        return $data ?? [];
-    }
-
+    /**
+     * @param $slug
+     * @return mixed|void
+     */
     public function postBySlug($slug)
     {
         $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug]);
-        if (!empty($data = $post['_source'])) {
-            $data['thumbnail'] = getUrlFile($data['thumbnail'] ?? '');
+        if (!empty($post['_source'])) {
+            $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
+            $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
+            if (!empty($post['_source']['categories'])) {
+                foreach ($post['_source']['categories'] as $key_category => $category) {
+                    $post['_source']['categories'][$key_category]['thumbnail'] = getUrlFile($category['thumbnail'] ?? '', false);
+                    $post['_source']['categories'][$key_category]['cover'] = getUrlFile($category['cover'] ?? '', false);
+                }
+            }
+            if (!empty($post['_source']['tags'])) {
+                foreach ($post['_source']['tags'] as $key_tag => $tag) {
+                    $post['_source']['tags'][$key_tag]['thumbnail'] = getUrlFile($tag['thumbnail'] ?? '', false);
+                    $post['_source']['tags'][$key_tag]['cover'] = getUrlFile($tag['cover'] ?? '', false);
+                }
+            }
+            return $post['_source'];
         }
-        return $data ?? [];
+        abort(404);
     }
 }

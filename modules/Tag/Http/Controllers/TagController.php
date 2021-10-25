@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Modules\Core\Http\Controllers\CoreController;
 use Modules\Tag\Http\Requests\CreateTagRequest;
 use Modules\Tag\Http\Requests\UpdateTagRequest;
+use Modules\Tag\Jobs\IndexTagElasticsearch;
 use Modules\Tag\Repositories\Interfaces\TagRepositoryInterface;
 
 class TagController extends CoreController
@@ -47,7 +48,8 @@ class TagController extends CoreController
      */
     public function store(CreateTagRequest $request)
     {
-        $this->tagRepository->create($request->all());
+        $tag = $this->tagRepository->create($request->all());
+        dispatch(new IndexTagElasticsearch($tag->id));
         return redirect()->route('tag.index')->withToastSuccess('Create success');
     }
 
@@ -85,6 +87,7 @@ class TagController extends CoreController
     {
         if ($this->tagRepository->find($id)) {
             $this->tagRepository->update($id, $request->all());
+            dispatch(new IndexTagElasticsearch($id));
             return redirect()->route('tag.index')->withToastSuccess('Update success');
         }
         abort(404);
@@ -99,6 +102,7 @@ class TagController extends CoreController
     {
         if ($this->tagRepository->find($id)) {
             $this->tagRepository->delete($id);
+            dispatch(new IndexTagElasticsearch($id));
             return redirect()->route('tag.index')->withToastSuccess('Delete success');
         }
         abort(404);

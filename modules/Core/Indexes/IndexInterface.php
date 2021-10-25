@@ -42,6 +42,8 @@ interface IndexInterface
 
     public function update(array $data, bool $refresh = true);
 
+    public function updateOrInsert(array $data, array $conditions = [], bool $refresh = true);
+
     public function delete(array $data, bool $refresh = true);
 
 }

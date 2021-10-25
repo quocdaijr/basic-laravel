@@ -14,3 +14,6 @@
     <span class="text-xs text-red-600 dark:text-red-400">{{ $message }}</span>
     @enderror
 </label>
+
+<x-field::upload name="thumbnail" :oldValue="$tag->thumbnailDetail->id ?? null" :options="['id'=>'thumbnail', 'class' => 'w-44', 'url' => getUrlFile($tag->thumbnailDetail->path ?? '')]"/>
+<x-field::upload name="cover" :oldValue="$tag->coverDetail->id ?? null" :options="['id'=>'cover', 'class' => 'w-1/3', 'url' => getUrlFile($tag->coverDetail->path ?? '')]"/>

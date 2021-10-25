@@ -4,8 +4,11 @@ namespace Modules\Category\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Category\Entities\Category;
+use Modules\Category\Indexes\Category as CategoryIndex;
 use Modules\Category\Listeners\BuildCategorySidebarListener;
+use Modules\Category\Repositories\Elasticsearch\CategoryElasticsearchRepository;
 use Modules\Category\Repositories\Eloquent\CategoryRepository;
+use Modules\Category\Repositories\Interfaces\CategoryElasticsearchRepositoryInterface;
 use Modules\Category\Repositories\Interfaces\CategoryRepositoryInterface;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
@@ -46,6 +49,10 @@ class CategoryServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(CategoryRepositoryInterface::class, function () {
             return new CategoryRepository(new Category());
+        });
+
+        $this->app->bind(CategoryElasticsearchRepositoryInterface::class, function () {
+            return new CategoryElasticsearchRepository(new CategoryIndex());
         });
 
         $this->app['events']->listen(

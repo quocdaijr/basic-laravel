@@ -4,9 +4,9 @@ namespace Modules\Post\Repositories\Elasticsearch;
 
 use Modules\Core\Constants\CoreConstant;
 use Modules\Post\Constants\PostConstant;
-use Modules\Post\Repositories\Abstracts\PostElasticsearchRepositoryRepositoryAbstract;
+use Modules\Post\Repositories\Abstracts\PostElasticsearchRepositoryAbstract;
 
-class PostElasticsearchRepository extends PostElasticsearchRepositoryRepositoryAbstract
+class PostElasticsearchRepository extends PostElasticsearchRepositoryAbstract
 {
     public function getFePosts(array $params): array
     {

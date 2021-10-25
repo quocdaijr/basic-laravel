@@ -4,7 +4,7 @@
          class="flex flex-col items-center my-2"
     >
         <label class="{{$name . '_input'}}
-            w-3/4 flex flex-col items-center px-4 py-4 text-blue-500 rounded-lg shadow-lg tracking-wide
+            w-full flex flex-col items-center px-4 py-4 text-blue-500 rounded-lg shadow-lg tracking-wide
             uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-gray-100 dark:text-blue-200
             dark:border-gray-600 dark:hover:text-gray-100"
                :class="{ 'hidden': isHasFile }"
@@ -79,6 +79,8 @@
                     inputId.setAttribute('value', '')
                     previewId.setAttribute('src', '')
                     this.isHasFile = false
+                    document.getElementsByClassName(previewTxt)[0].classList.add("hidden")
+                    document.getElementsByClassName(inputTxt)[0].classList.remove("hidden")
                 }
             };
         }

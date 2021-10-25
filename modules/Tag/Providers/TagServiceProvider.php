@@ -3,12 +3,14 @@
 namespace Modules\Tag\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Factory;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
 use Modules\Tag\Entities\Tag;
+use Modules\Tag\Indexes\Tag as TagIndex;
 use Modules\Tag\Listeners\BuildTagSidebarListener;
+use Modules\Tag\Repositories\Elasticsearch\TagElasticsearchRepository;
 use Modules\Tag\Repositories\Eloquent\TagRepository;
+use Modules\Tag\Repositories\Interfaces\TagElasticsearchRepositoryInterface;
 use Modules\Tag\Repositories\Interfaces\TagRepositoryInterface;
 
 class TagServiceProvider extends ServiceProvider
@@ -49,6 +51,10 @@ class TagServiceProvider extends ServiceProvider
 
         $this->app->bind(TagRepositoryInterface::class, function () {
             return new TagRepository(new Tag());
+        });
+
+        $this->app->bind(TagElasticsearchRepositoryInterface::class, function () {
+            return new TagElasticsearchRepository(new TagIndex());
         });
 
         $this->app['events']->listen(

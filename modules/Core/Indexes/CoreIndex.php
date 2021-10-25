@@ -354,6 +354,88 @@ abstract class CoreIndex implements IndexInterface
         return false;
     }
 
+    public function updateByConditions(array $data, array $conditions, bool $refresh = true)
+    {
+        if ($this->isConnected() && !empty($conditions)) {
+            $arrTerm = [];
+            foreach ($conditions as $key => $value) {
+                $arrTerm[] = [
+                    'term' => [
+                        $key => $value
+                    ]
+                ];
+            }
+            $txtData = '';
+            $paramsData = [];
+            foreach ($data as $keyData => $valueData) {
+                $txtData .= 'ctx._source.' . $keyData . ' = params.' . $keyData . ';';
+                $paramsData[$keyData] = $valueData;
+            }
+            $params = [
+                'index' => $this->getIndex(),
+                'timeout' => $this->getTimeout(),
+                'body' => [
+                    'script' => [
+                        'source' => $txtData,
+                        'lang' => 'painless',
+                        'params' => $paramsData
+                    ],
+                    'query' => [
+                        'bool' => [
+                            'must' => $arrTerm
+                        ]
+                    ]
+                ]
+            ];
+            if ($refresh === true)
+                $params['refresh'] = $refresh;
+
+            $result = $this->getConnection()->updateByQuery($params);
+            return ($result['updated'] > 0 && empty($result['failures']));
+        }
+        return false;
+    }
+
+    public function updateOrInsert(array $data, array $conditions = [], bool $refresh = true)
+    {
+        if ($this->isConnected()) {
+            if (!empty($conditions)) {
+                $arrTerm = [];
+                foreach ($conditions as $key => $value) {
+                    $arrTerm[] = [
+                        'term' => [
+                            $key => $value
+                        ]
+                    ];
+                }
+                $params = [
+                    'index' => $this->getIndex(),
+                    'body' => [
+                        'query' => [
+                            'bool' => [
+                                'must' => $arrTerm
+                            ]
+                        ]
+                    ]
+                ];
+
+                if ($this->count($params) > 0)
+                    return $this->updateByConditions($data, $conditions, $refresh);
+            }
+
+            if (!empty($data[$this->getId()])) {
+                $params = [
+                    'index' => $this->getIndex(),
+                    'id' => $data[$this->getId()],
+                ];
+                if ($this->getConnection()->exists($params))
+                    return $this->update($data, $refresh);
+            }
+            return $this->insert($data, $refresh);
+        }
+        return false;
+    }
+
     public function delete(array $data, bool $refresh = true)
     {
         if ($this->isConnected()) {

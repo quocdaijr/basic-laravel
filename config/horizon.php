@@ -166,6 +166,14 @@ return [
     */
 
     'defaults' => [
+        'supervisor-0' => [
+            'connection' => 'redis',
+            'queue' => QueueConstant::QUEUE_DEFAULT,
+            'balance' => 'auto',
+            'maxProcesses' => 1,
+            'memory' => 128,
+            'nice' => 0,
+        ],
         'supervisor-1' => [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_MAIL,
@@ -178,7 +186,7 @@ return [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_ES_POST,
             'balance' => 'auto',
-            'maxProcesses' => 2,
+            'maxProcesses' => 1,
             'memory' => 128,
             'nice' => 0,
         ],
@@ -194,11 +202,11 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 5,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
-            ],
+//            'supervisor-1' => [
+//                'maxProcesses' => 5,
+//                'balanceMaxShift' => 1,
+//                'balanceCooldown' => 3,
+//            ],
         ],
 
         'local' => [],

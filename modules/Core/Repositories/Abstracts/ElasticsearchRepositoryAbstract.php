@@ -17,6 +17,11 @@ abstract class ElasticsearchRepositoryAbstract implements ElasticsearchRepositor
         return $this->index->insert($data);
     }
 
+    public function updateOrCreate(array $data, array $conditions = []): bool
+    {
+        return $this->index->updateOrInsert($data, $conditions);
+    }
+
     public function update(array $data): bool
     {
         return $this->index->update($data);

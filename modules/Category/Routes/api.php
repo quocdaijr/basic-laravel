@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-//Route::middleware('auth:api')->get('/category', function (Request $request) {
-//    return $request->user();
-//});
+Route::prefix('v1')->group(function () {
+    Route::get('/categories', 'CategoryController@categories')->name('api.categories');
+    Route::get('/category/{slug}', 'CategoryController@categoryBySlug')->where('id', '[a-z0-9\-]+')->name('api.category_by_slug');
+});

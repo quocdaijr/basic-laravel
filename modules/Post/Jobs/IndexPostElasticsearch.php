@@ -44,6 +44,8 @@ class IndexPostElasticsearch extends CoreJob
                         'id' => $category->id,
                         'name' => $category->name,
                         'slug' => $category->slug,
+                        'thumbnail' => $category->thumbnailDetail->path ?? null,
+                        'cover' => $category->coverDetail->path ?? null
                     ];
             }
 
@@ -54,6 +56,8 @@ class IndexPostElasticsearch extends CoreJob
                         'id' => $tag->id,
                         'name' => $tag->name,
                         'slug' => $tag->slug,
+                        'thumbnail' => $tag->thumbnailDetail->path ?? null,
+                        'cover' => $tag->coverDetail->path ?? null
                     ];
             }
 
@@ -82,7 +86,7 @@ class IndexPostElasticsearch extends CoreJob
                 }
             }
 
-            $postElasticsearchRepository->create([
+            $postElasticsearchRepository->updateOrCreate([
                 'id' => $post->id,
                 'name' => $post->name,
                 'title' => $post->title,
@@ -101,6 +105,8 @@ class IndexPostElasticsearch extends CoreJob
                 'categories' => $categories,
                 'tags' => $tags,
                 'files' => $files ?? [],
+            ], [
+                'id' => $post->id
             ]);
             $this->writeMessage("Begin build ES for Post with id $this->id");
         } catch (Exception $e) {

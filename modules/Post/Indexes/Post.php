@@ -143,6 +143,12 @@ class Post extends CoreIndex
                     'slug' => [
                         'type' => 'keyword',
                     ],
+                    'thumbnail' => [
+                        'type' => 'keyword',
+                    ],
+                    'cover' => [
+                        'type' => 'keyword',
+                    ],
                 ]
             ],
             'tags' => [
@@ -163,6 +169,12 @@ class Post extends CoreIndex
                         'analyzer' => 'vietnamese_standard'
                     ],
                     'slug' => [
+                        'type' => 'keyword',
+                    ],
+                    'thumbnail' => [
+                        'type' => 'keyword',
+                    ],
+                    'cover' => [
                         'type' => 'keyword',
                     ],
                 ]

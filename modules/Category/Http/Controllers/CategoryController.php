@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Modules\Category\Http\Requests\CreateCategoryRequest;
 use Modules\Category\Http\Requests\UpdateCategoryRequest;
+use Modules\Category\Jobs\IndexCategoryElasticsearch;
 use Modules\Category\Repositories\Interfaces\CategoryRepositoryInterface;
 use Modules\Core\Http\Controllers\CoreController;
 
@@ -47,7 +48,8 @@ class CategoryController extends CoreController
      */
     public function store(CreateCategoryRequest $request)
     {
-        $this->categoryRepository->create($request->all());
+        $category = $this->categoryRepository->create($request->all());
+        dispatch(new IndexCategoryElasticsearch($category->id));
         return redirect()->route('category.index')->withToastSuccess('Create success');
     }
 
@@ -85,6 +87,7 @@ class CategoryController extends CoreController
     {
         if ($this->categoryRepository->find($id)) {
             $this->categoryRepository->update($id, $request->all());
+            dispatch(new IndexCategoryElasticsearch($id));
             return redirect()->route('category.index')->withToastSuccess('Update success');
         }
         abort(404);
@@ -99,6 +102,7 @@ class CategoryController extends CoreController
     {
         if ($this->categoryRepository->find($id)) {
             $this->categoryRepository->delete($id);
+            dispatch(new IndexCategoryElasticsearch($id));
             return redirect()->route('category.index')->withToastSuccess('Delete success');
         }
         abort(404);

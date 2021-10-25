@@ -4,9 +4,12 @@ namespace Modules\Category\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Modules\Core\Traits\RegisterRouteTrait;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    use RegisterRouteTrait;
+
     /**
      * The module namespace to assume when generating URLs to actions.
      *
@@ -61,9 +64,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->moduleNamespace)
-            ->group(module_path('Category', '/Routes/api.php'));
+        $this->registerApiRoute('Category', $this->moduleNamespace . '\Api');
     }
 }

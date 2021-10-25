@@ -4,6 +4,7 @@ namespace Modules\Tag\Repositories\Eloquent;
 
 use Log;
 use Modules\Core\Constants\CoreConstant;
+use Modules\Tag\Jobs\IndexTagElasticsearch;
 use Modules\Tag\Repositories\Abstracts\TagRepositoryAbstract;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,7 @@ class TagRepository extends TagRepositoryAbstract
                     'status' => CoreConstant::STATUS_ACTIVE,
                     'slug' => $this->generateSlug($name)
                 ]);
+                dispatch(new IndexTagElasticsearch($tag->id));
             }
             $ids[] = $tag->id;
         }
