@@ -3,6 +3,7 @@
 namespace Modules\Category\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Category\Console\BuildCategoryElasticsearchCommand;
 use Modules\Category\Entities\Category;
 use Modules\Category\Indexes\Category as CategoryIndex;
 use Modules\Category\Listeners\BuildCategorySidebarListener;
@@ -59,6 +60,10 @@ class CategoryServiceProvider extends ServiceProvider
             BuildSidebarEvent::class,
             BuildCategorySidebarListener::class
         );
+
+        $this->commands([
+            BuildCategoryElasticsearchCommand::class
+        ]);
     }
 
     /**

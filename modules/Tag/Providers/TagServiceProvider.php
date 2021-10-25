@@ -5,6 +5,7 @@ namespace Modules\Tag\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
+use Modules\Tag\Console\BuildTagElasticsearchCommand;
 use Modules\Tag\Entities\Tag;
 use Modules\Tag\Indexes\Tag as TagIndex;
 use Modules\Tag\Listeners\BuildTagSidebarListener;
@@ -61,6 +62,10 @@ class TagServiceProvider extends ServiceProvider
             BuildSidebarEvent::class,
             BuildTagSidebarListener::class
         );
+
+        $this->commands([
+            BuildTagElasticsearchCommand::class
+        ]);
     }
 
     /**
