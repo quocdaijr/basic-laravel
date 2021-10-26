@@ -5,11 +5,13 @@ namespace Modules\Tag\Entities;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Core\Entities\CoreEloquent;
 use Modules\Post\Entities\Post;
+use Modules\Tag\Traits\Relations\FileRelationTrait;
 use Modules\Tag\Traits\Relations\PostRelationTrait;
 
 class Tag extends CoreEloquent
 {
     use PostRelationTrait;
+    use FileRelationTrait;
 
     /**
      * @var string

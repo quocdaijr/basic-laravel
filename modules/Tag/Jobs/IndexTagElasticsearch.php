@@ -33,23 +33,30 @@ class IndexTagElasticsearch extends CoreJob
     public function handle(TagRepositoryInterface $tagRepository, TagElasticsearchRepositoryInterface $tagElasticsearchRepository)
     {
         try {
-            $this->writeMessage("Begin build ES for Post with id $this->id");
-            $tag = $tagRepository->find($this->id);
+            $this->writeMessage("Begin delete es of old TAG with id $this->id");
+            $deleted = $tagElasticsearchRepository->delete(['id' => $this->id]);
+            $this->writeMessage($deleted ? "End delete es of old TAG with id $this->id" : "Can't delete or not found old es TAG with id $this->id");
 
-            $tagElasticsearchRepository->updateOrCreate([
-                'id' => $tag->id,
-                'name' => $tag->name,
-                'slug' => $tag->slug,
-                'description' => $tag->description,
-                'status' => $tag->status,
-                'thumbnail' => $tag->thumbnail,
-                'cover' => $tag->cover,
-                'created_at' => date('Y-m-d H:i:s', strtotime($tag->created_at)),
-                'updated_at' => date('Y-m-d H:i:s', strtotime($tag->updated_at))
-            ], [
-                'id' => $tag->id
-            ]);
-            $this->writeMessage("Begin build ES for Tag with id $this->id");
+            $this->writeMessage("Begin build es for TAG with id $this->id");
+            $tag = $tagRepository->find($this->id);
+            if (!empty($tag)) {
+                $tagElasticsearchRepository->updateOrCreate([
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                    'slug' => $tag->slug,
+                    'description' => $tag->description,
+                    'status' => $tag->status,
+                    'thumbnail' => $tag->thumbnailDetail->path ?? null,
+                    'cover' => $tag->coverDetail->path ?? null,
+                    'created_at' => date('Y-m-d H:i:s', strtotime($tag->created_at)),
+                    'updated_at' => date('Y-m-d H:i:s', strtotime($tag->updated_at))
+                ], [
+                    'id' => $tag->id
+                ]);
+                $this->writeMessage("End build es for TAG with id $this->id");
+            } else {
+                $this->writeMessage("No TAG with id $this->id");
+            }
         } catch (Exception $e) {
             $this->writeException($e);
             throw $e;
