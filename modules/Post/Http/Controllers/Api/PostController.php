@@ -61,7 +61,7 @@ class PostController extends ApiController
         $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug]);
         if (!empty($post['_source'])) {
             $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
-            $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
+            $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '');
             if (!empty($post['_source']['categories'])) {
                 foreach ($post['_source']['categories'] as $key_category => $category) {
                     $post['_source']['categories'][$key_category]['thumbnail'] = getUrlFile($category['thumbnail'] ?? '', false);
