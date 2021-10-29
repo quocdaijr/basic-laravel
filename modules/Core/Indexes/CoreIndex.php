@@ -458,10 +458,9 @@ abstract class CoreIndex implements IndexInterface
                 $result = $this->getConnection()->deleteByQuery($params);
 
             }
-            return ($result['result'] === 'deleted' && $result['_shards']['successful'] == 1) || $result['result'] === 'noop';
-        } else {
-            return false;
+            return (!empty($result) && ($result['result'] === 'deleted' && $result['_shards']['successful'] == 1) || $result['result'] === 'noop');
         }
+        return false;
     }
 
 }
