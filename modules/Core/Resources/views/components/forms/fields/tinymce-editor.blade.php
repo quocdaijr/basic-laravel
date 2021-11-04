@@ -30,11 +30,12 @@
             ],
             templates: [],
             toolbar:
-                'code | preview | undo redo | paste pastetext | styleselect | bold italic | forecolor backcolor | ' +
-                'template codesample | alignleft aligncenter alignright alignjustify | bullist numlist | ' +
-                'emoticons link | insertImage insertMedia',
-
-            contextmenu: "",
+                'code | preview | undo redo | paste pastetext | formatselect fontselect fontsizeselect | bold italic underline | forecolor backcolor | ' +
+                'insertImage insertMedia | template codesample | alignleft aligncenter alignright alignjustify | ' +
+                'outdent indent | bullist numlist | emoticons link',
+            toolbar_mode: 'sliding',
+            lists_indent_on_tab: true,
+            contextmenu: 'link image imagetools table spellchecker lists insertImageItem insertMediaItem',
 
             paste_as_text: true,
 
@@ -73,6 +74,30 @@
                     }
                 })
                 editor.ui.registry.addButton('insertMedia', {
+                    icon: 'embed',
+                    onAction: function () {
+                        if (document.body.contains(document.getElementById('btn_modal_file_manager_for_editor'))) {
+                            document.getElementById('btn_modal_file_manager_for_editor').setAttribute('data-type', 'video')
+                            document.getElementById('btn_modal_file_manager_for_editor').click()
+                        } else {
+                            console.error("Not found file manager dialog")
+                        }
+                    }
+                })
+                editor.ui.registry.addMenuItem('insertImageItem', {
+                    text: 'InsertImage',
+                    icon: 'gallery',
+                    onAction: function () {
+                        if (document.body.contains(document.getElementById('btn_modal_file_manager_for_editor'))) {
+                            document.getElementById('btn_modal_file_manager_for_editor').setAttribute('data-type', 'image')
+                            document.getElementById('btn_modal_file_manager_for_editor').click()
+                        } else {
+                            console.error("Not found file manager dialog")
+                        }
+                    }
+                })
+                editor.ui.registry.addMenuItem('insertMediaItem', {
+                    text: 'InsertVideo',
                     icon: 'embed',
                     onAction: function () {
                         if (document.body.contains(document.getElementById('btn_modal_file_manager_for_editor'))) {
