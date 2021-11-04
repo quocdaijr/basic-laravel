@@ -28,8 +28,8 @@ class PostController extends ApiController
         if (!empty($posts['data'])) {
             foreach ($posts['data'] as $post) {
                 if (!empty($post['_source'])) {
-                    $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
-                    $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '');
+                    $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '', false);
+                    $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '', false);
                     if (!empty($post['_source']['categories'])) {
                         foreach ($post['_source']['categories'] as $key_category => $category) {
                             $post['_source']['categories'][$key_category]['thumbnail'] = getUrlFile($category['thumbnail'] ?? '', false);
@@ -60,8 +60,8 @@ class PostController extends ApiController
     {
         $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug]);
         if (!empty($post['_source'])) {
-            $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '');
-            $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '');
+            $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '', false);
+            $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '', false);
             if (!empty($post['_source']['categories'])) {
                 foreach ($post['_source']['categories'] as $key_category => $category) {
                     $post['_source']['categories'][$key_category]['thumbnail'] = getUrlFile($category['thumbnail'] ?? '', false);
