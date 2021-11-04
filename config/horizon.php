@@ -169,7 +169,7 @@ return [
         'supervisor-0' => [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_DEFAULT,
-            'balance' => 'auto',
+            'balance' => 'simple',
             'maxProcesses' => 1,
             'memory' => 128,
             'nice' => 0,
@@ -177,7 +177,7 @@ return [
         'supervisor-1' => [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_MAIL,
-            'balance' => 'auto',
+            'balance' => 'simple',
             'maxProcesses' => 1,
             'memory' => 128,
             'nice' => 0,
@@ -185,7 +185,7 @@ return [
         'supervisor-2' => [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_ES_POST,
-            'balance' => 'auto',
+            'balance' => 'simple',
             'maxProcesses' => 1,
             'memory' => 128,
             'nice' => 0,
@@ -193,7 +193,7 @@ return [
         'supervisor-3' => [
             'connection' => 'redis',
             'queue' => QueueConstant::QUEUE_RESIZE_IMAGE,
-            'balance' => 'auto',
+            'balance' => 'simple',
             'maxProcesses' => 1,
             'memory' => 128,
             'nice' => 0,
