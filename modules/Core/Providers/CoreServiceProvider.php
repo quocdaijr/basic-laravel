@@ -39,7 +39,7 @@ class CoreServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerTranslations();
-        $this->registerMultiConfig(['config', 'elasticsearch']);
+        $this->registerMultiConfig(['config']);
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
         Blade::directive('datetime', function ($expression) {
