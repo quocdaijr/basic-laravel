@@ -2,9 +2,9 @@
 
 namespace Modules\Category\Indexes;
 
-use Modules\Core\Indexes\CoreIndex;
+use Modules\Core\Indexes\CoreIndexAbstract;
 
-class Category extends CoreIndex
+class Category extends CoreIndexAbstract
 {
     /**
      *

@@ -26,6 +26,7 @@
         "quocdaijr/core": "*@dev",
         "quocdaijr/dashboard": "*@dev",
         "quocdaijr/file": "*@dev",
+        "quocdaijr/laravel-elasticsearch": "*@dev",
         "quocdaijr/post": "*@dev",
         "quocdaijr/tag": "*@dev",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "^11.3"
@@ -36,6 +37,7 @@
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "orchestra/testbench": "^6.22",
         "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
@@ -87,6 +89,10 @@
         {
             "type": "path",
             "url": "./modules/*"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:quocdaijr/laravel-elasticsearch.git"
         }
     ]
 }

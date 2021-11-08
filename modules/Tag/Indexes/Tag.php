@@ -2,9 +2,9 @@
 
 namespace Modules\Tag\Indexes;
 
-use Modules\Core\Indexes\CoreIndex;
+use Modules\Core\Indexes\CoreIndexAbstract;
 
-class Tag extends CoreIndex
+class Tag extends CoreIndexAbstract
 {
     public function __construct()
     {

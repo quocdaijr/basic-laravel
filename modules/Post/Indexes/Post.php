@@ -2,9 +2,9 @@
 
 namespace Modules\Post\Indexes;
 
-use Modules\Core\Indexes\CoreIndex;
+use Modules\Core\Indexes\CoreIndexAbstract;
 
-class Post extends CoreIndex
+class Post extends CoreIndexAbstract
 {
     public function __construct()
     {

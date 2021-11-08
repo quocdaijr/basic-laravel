@@ -13,7 +13,6 @@ use Modules\Post\Constants\PostConstant;
 use Modules\Post\Http\Requests\CreatePostRequest;
 use Modules\Post\Http\Requests\UpdatePostRequest;
 use Modules\Post\Jobs\IndexPostElasticsearch;
-use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 use Modules\Post\Repositories\Interfaces\PostRepositoryInterface;
 use Modules\Tag\Repositories\Interfaces\TagRepositoryInterface;
 
@@ -24,7 +23,6 @@ class PostController extends CoreController
         protected PostRepositoryInterface              $postRepository,
         protected CategoryRepositoryInterface          $categoryRepository,
         protected TagRepositoryInterface               $tagRepository,
-        protected PostElasticsearchRepositoryInterface $postElasticsearchRepository
     )
     {
         parent::__construct();
