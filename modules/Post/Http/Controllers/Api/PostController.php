@@ -3,6 +3,7 @@
 namespace Modules\Post\Http\Controllers\Api;
 
 use Modules\Core\Http\Controllers\ApiController;
+use Modules\Post\Constants\PostConstant;
 use Modules\Post\Http\Requests\Api\PostsRequest;
 use Modules\Post\Repositories\Interfaces\PostElasticsearchRepositoryInterface;
 
@@ -58,7 +59,7 @@ class PostController extends ApiController
      */
     public function postBySlug($slug)
     {
-        $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug]);
+        $post = $this->postElasticsearchRepository->findByAttributes(['slug' => $slug, 'status' => PostConstant::STATUS_PUBLISHED]);
         if (!empty($post['_source'])) {
             $post['_source']['thumbnail'] = getUrlFile($post['_source']['thumbnail'] ?? '', false);
             $post['_source']['cover'] = getUrlFile($post['_source']['cover'] ?? '', false);

@@ -10,12 +10,9 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Exceptions\CoreHandler;
-use Modules\Core\Http\Middleware\Cors;
-use Modules\Core\Http\Middleware\ForceJsonResponse;
 use Modules\Core\Listeners\BuildCoreSidebarListener;
 use Modules\Core\Supports\CustomResourceRegistrar;
 use Modules\Core\Traits\RegisterDataTrait;
-use RealRashid\SweetAlert\ToSweetAlert;
 use Maatwebsite\Sidebar\SidebarServiceProvider as PackageSidebarServiceProvider;
 
 class CoreServiceProvider extends ServiceProvider
