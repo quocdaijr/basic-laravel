@@ -33,7 +33,7 @@ class ResizeImage extends CoreJob
             if ($resize)
                 $this->writeMessage("Resize for path $this->path is success");
             else
-                $this->writeError("Resize for path $this->path is success");
+                $this->writeError("Resize for path $this->path is failed");
         } else {
             $this->writeError("Path $this->path is invalid");
         }

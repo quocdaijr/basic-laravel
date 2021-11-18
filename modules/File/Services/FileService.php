@@ -70,6 +70,19 @@ class FileService
         return $dbFile ?? null;
     }
 
+    public function update(int $id, array $data)
+    {
+        if (!empty($oldFile = $this->fileRepository->find($id))) {
+            $this->fileRepository->update($id, $data);
+            if ($oldFile->type == FileConstant::FILE_TYPE_IMAGE) {
+                dispatch(new ResizeImage($oldFile->path));
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     public function resize($path)
     {
         try {

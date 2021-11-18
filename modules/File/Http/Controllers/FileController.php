@@ -71,20 +71,19 @@ class FileController extends CoreController
      */
     public function update(UpdateFileRequest $request, int $id)
     {
-        if ($this->fileRepository->find($id)) {
-            $data = [
-                'title' => $request->title,
-                'description' => $request->description
-            ];
-            if (!empty($request->name))
-                $data['name'] = $request->name;
-            if (!empty($request->status))
-                $data['status'] = $request->status;
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description
+        ];
+        if (!empty($request->name))
+            $data['name'] = $request->name;
+        if (!empty($request->status))
+            $data['status'] = $request->status;
 
-            $this->fileRepository->update($id, $data);
+        if ($this->fileService->update($id, $data))
             return response()->json(['success' => true]);
-        }
-        abort(404);
+        else
+            abort(404);
     }
 
     /**
