@@ -20,9 +20,8 @@
     <script>
         tinymce.init({
             selector: '#{{$name}}',
-            // max_width: '100%',
             min_height: 300,
-            powerpaste_allow_local_images: true,
+            max_height: 820,
             plugins: [
                 'code autoresize advlist anchor autolink codesample fullscreen help image imagetools',
                 ' lists link media noneditable preview paste',
@@ -35,7 +34,7 @@
                 'outdent indent | bullist numlist | emoticons link',
             toolbar_mode: 'sliding',
             lists_indent_on_tab: true,
-            contextmenu: 'link image imagetools table spellchecker lists insertImageItem insertMediaItem',
+            contextmenu: 'link image imagetools table lists insertImageItem insertMediaItem',
 
             paste_as_text: true,
 
