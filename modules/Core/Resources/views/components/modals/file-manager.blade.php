@@ -1,4 +1,4 @@
-<div x-data="dataFileManager{{$uniqueId}}()" @keydown.escape="closeModalFileManager()" x-cloak>
+<div class="h-0" x-data="dataFileManager{{$uniqueId}}()" @keydown.escape="closeModalFileManager()" x-cloak>
     <section class="flex flex-wrap p-4 h-full items-center">
         <button type="button"
                 id="{{$btnOpenModalId ?? ('btn_open_modal_file_manager' . $uniqueId)}}"

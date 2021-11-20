@@ -21,7 +21,7 @@
         tinymce.init({
             selector: '#{{$name}}',
             min_height: 300,
-            max_height: 820,
+            max_height: 805,
             plugins: [
                 'code autoresize advlist anchor autolink codesample fullscreen help image imagetools',
                 ' lists link media noneditable preview paste',
