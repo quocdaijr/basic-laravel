@@ -8,11 +8,11 @@ use Modules\File\Constants\FileConstant;
 use Modules\File\Jobs\ResizeImage;
 use Modules\File\Repositories\Interfaces\FileRepositoryInterface;
 
-class BuildResizeCommand extends Command
+class ResizeImagesCommand extends Command
 {
-    protected $signature = 'module:file:build-resize';
+    protected $signature = 'module:file:resize-images';
 
-    protected $description = 'Command build resize for File';
+    protected $description = 'Command resize images';
 
     public function __construct(
         protected FileRepositoryInterface $fileRepository

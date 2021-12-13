@@ -8,7 +8,6 @@ use Modules\Core\Constants\CoreConstant;
 use Modules\File\Constants\FileConstant;
 use Modules\File\Jobs\ResizeImage;
 use Modules\File\Repositories\Interfaces\FileRepositoryInterface;
-use Storage;
 
 class SyncFilesCommand extends Command
 {
