@@ -5,6 +5,8 @@ namespace Modules\File\Providers;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Events\BuildSidebarEvent;
 use Modules\Core\Traits\RegisterDataTrait;
+use Modules\File\Console\BuildResizeCommand;
+use Modules\File\Console\SyncFilesCommand;
 use Modules\File\Entities\File;
 use Modules\File\Listeners\BuildFileSidebarListener;
 use Modules\File\Repositories\Eloquent\FileRepository;
@@ -54,6 +56,10 @@ class FileServiceProvider extends ServiceProvider
             BuildSidebarEvent::class,
             BuildFileSidebarListener::class
         );
+        $this->commands([
+            BuildResizeCommand::class,
+            SyncFilesCommand::class
+        ]);
     }
 
     /**
