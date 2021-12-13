@@ -92,15 +92,15 @@ class FileService
                     $resizePath = $this->getResizeFolderName() . DIRECTORY_SEPARATOR . $name
                         . DIRECTORY_SEPARATOR . ltrim($path, $this->getRawFolderName() . DIRECTORY_SEPARATOR);
                     if (!$this->disk->exists($resizePath)) {
-                        list($rawWidth, $rawHeight) = getimagesize($this->disk->path($path));
+                        list($rawWidth, $rawHeight) = getimagesize($this->disk->url($path));
                         $resizeWidth = ($rawWidth < $width) ? $rawWidth : $width;
                         $resizeHeight = ($rawHeight < $height) ? $rawHeight : $height;
                         if ($resizeWidth > $resizeHeight)
-                            $image = Image::make($this->disk->path($path))->resize($resizeWidth, null, function ($constraint) {
+                            $image = Image::make($this->disk->url($path))->resize($resizeWidth, null, function ($constraint) {
                                 $constraint->aspectRatio();
                             });
                         else
-                            $image = Image::make($this->disk->path($path))->resize(null, $resizeHeight, function ($constraint) {
+                            $image = Image::make($this->disk->url($path))->resize(null, $resizeHeight, function ($constraint) {
                                 $constraint->aspectRatio();
                             });
                         $this->disk->put($resizePath, $image->encode(), [
@@ -114,6 +114,7 @@ class FileService
             return false;
         } catch (\Exception $e) {
             print_r($e);
+            return false;
         }
     }
 
