@@ -14,7 +14,7 @@ class SyncFilesCommand extends Command
 {
     protected $signature = 'module:file:sync-files {from} {to}';
 
-    protected $description = 'Command build resize for File';
+    protected $description = 'Command sync files';
 
     public function __construct(
         protected FileRepositoryInterface $fileRepository,
