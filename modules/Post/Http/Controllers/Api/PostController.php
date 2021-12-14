@@ -75,6 +75,10 @@ class PostController extends ApiController
                     $post['_source']['tags'][$key_tag]['cover'] = getUrlFile($tag['cover'] ?? '', false);
                 }
             }
+
+            if (!empty($post['_source']['content']))
+                $post['_source']['content'] = adjustedHtmlContent($post['_source']['content']);
+
             return $post['_source'];
         }
         abort(404);

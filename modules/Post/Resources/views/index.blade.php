@@ -6,18 +6,18 @@
 @section('content')
     <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
-                <div class="w-full overflow-x-auto">
-                    <a href="{{route('post.create')}}"
-                       class="flex items-center justify-between w-28 mb-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple dark:text-gray-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 float-left" viewBox="0 0 20 20"
-                             fill="currentColor">
-                            <path fill-rule="evenodd"
-                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                                  clip-rule="evenodd"/>
-                        </svg>
-                        <span class="float-right font-bold">Create</span>
-                    </a>
-                    @if(isset($posts))
+            <div class="w-full overflow-x-auto">
+                <a href="{{route('post.create')}}"
+                   class="flex items-center justify-between w-28 mb-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple dark:text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 float-left" viewBox="0 0 20 20"
+                         fill="currentColor">
+                        <path fill-rule="evenodd"
+                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    <span class="float-right font-bold">Create</span>
+                </a>
+                @if(isset($posts))
                     <table class="w-full whitespace-no-wrap">
                         <thead>
                         <tr
@@ -29,14 +29,14 @@
                             <th class="px-4 py-3">Slug</th>
                             <th class="px-4 py-3">Status</th>
                             <th class="px-4 py-3">Date</th>
-                            <th class="px-4 py-3">Action</th>
+                            <th class="px-4 py-3" style="min-width: 150px">Action</th>
                         </tr>
                         </thead>
                         <tbody
                             class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                         >
                         @php
-                        $n = 1 + ((request()->get('page', 1) - 1) * \Modules\Core\Constants\CoreConstant::PER_PAGE_DEFAULT);
+                            $n = 1 + ((request()->get('page', 1) - 1) * \Modules\Core\Constants\CoreConstant::PER_PAGE_DEFAULT);
                         @endphp
                         @foreach($posts as $post)
                             <tr class="text-gray-700 dark:text-gray-400">
@@ -51,8 +51,16 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="flex items-center text-sm">
-                                        {{$post->name}}
+                                    <div class="flex text-sm">
+                                        <span>{{$post->name}}</span>
+                                        <a href="{{env('APP_FE_URL') . DIRECTORY_SEPARATOR . $post->slug}}"
+                                            target="_blank" class="ml-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                 viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                            </svg>
+                                        </a>
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-sm">
@@ -109,8 +117,8 @@
                         </tbody>
                     </table>
                     {{ $posts->links() }}
-                    @endif
-                </div>
+                @endif
+            </div>
         </div>
     </div>
 @endsection

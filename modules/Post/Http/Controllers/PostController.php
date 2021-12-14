@@ -94,6 +94,8 @@ class PostController extends CoreController
     public function show(int $id)
     {
         if (!empty($post = $this->postRepository->find($id))) {
+            if (!empty($post->content))
+                $post->content = adjustedHtmlContent($post->content);
             return view('post::show', compact('post'));
         }
         abort(404);
@@ -121,6 +123,8 @@ class PostController extends CoreController
                             break;
                     }
                 }
+                if (!empty($post->content))
+                    $post->content = adjustedHtmlContent($post->content);
             }
             return view('post::edit', compact('post', 'categories'));
         }
