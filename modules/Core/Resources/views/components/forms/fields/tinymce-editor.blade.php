@@ -25,13 +25,13 @@
             plugins: [
                 'code autoresize advlist anchor autolink codesample fullscreen help image imagetools',
                 ' lists link media noneditable preview paste',
-                ' searchreplace table template visualblocks wordcount media emoticons autosave'
+                ' searchreplace table template visualblocks wordcount media emoticons autosave print'
             ],
             templates: [],
             toolbar:
                 'code | preview | undo redo | paste pastetext | formatselect fontselect fontsizeselect | bold italic underline | forecolor backcolor | ' +
                 'insertImage insertMedia | template codesample | alignleft aligncenter alignright alignjustify | ' +
-                'outdent indent | bullist numlist | emoticons link',
+                'outdent indent | bullist numlist | emoticons link | print',
             toolbar_mode: 'sliding',
             lists_indent_on_tab: true,
             contextmenu: 'link image imagetools table lists insertImageItem insertMediaItem',
