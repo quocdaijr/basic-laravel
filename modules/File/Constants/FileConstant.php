@@ -22,7 +22,7 @@ class FileConstant
     public static function htmlOptionFileType($default = '')
     {
         return '
-        <option value=>Không</option>
+        <option value=></option>
         <option value="' . self::FILE_TYPE_IMAGE . '" ' . ($default == self::FILE_TYPE_IMAGE ? 'selected' : '') . '>Image</option>
         <option value="' . self::FILE_TYPE_VIDEO . '" ' . ($default == self::FILE_TYPE_VIDEO ? 'selected' : '') . '>Video</option>
         <option value="' . self::FILE_TYPE_DOCUMENT . '" ' . ($default == self::FILE_TYPE_DOCUMENT ? 'selected' : '') . '>Document</option>

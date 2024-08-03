@@ -36,7 +36,7 @@ class CoreConstant
     public static function htmlOptionStatuses($default = '')
     {
         return '
-        <option value=>Không</option>
+        <option value=></option>
         <option value="' . self::STATUS_ACTIVE . '" ' . ($default == self::STATUS_ACTIVE ? 'selected' : '') . '>Active</option>
         <option value="' . self::STATUS_DISABLE . '" ' . ($default == self::STATUS_DISABLE ? 'selected' : '') . '>Disable</option>
         <option value="' . self::STATUS_DELETED . '" ' . ($default == self::STATUS_DELETED ? 'selected' : '') . '>Deleted</option>
@@ -45,6 +45,6 @@ class CoreConstant
 
     public static function getHtmlStatus($status)
     {
-        return self::htmlStatuses()[$status] ?? '<span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">Không rõ</span>';
+        return self::htmlStatuses()[$status] ?? '<span class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">Unknown</span>';
     }
 }

@@ -13,12 +13,12 @@
         "@tailwindcss/forms": "^0.3.4",
         "@tailwindcss/typography": "^0.4.0",
         "alpinejs": "^3.4.2",
-        "axios": "^0.21.4",
+        "axios": "^1.7.3",
         "laravel-mix": "^6.0.31",
         "lodash": "^4.17.19",
         "postcss": "^8.3.9",
         "postcss-import": "^14.0.1",
-        "resolve-url-loader": "^4.0.0",
+        "resolve-url-loader": "^5.0.0",
         "sass": "^1.42.1",
         "sass-loader": "^12.1.0",
         "tailwindcss": "^2.2.16"
@@ -29,7 +29,7 @@
         "prismjs": "^1.25.0",
         "slim-select": "^1.27.0",
         "sweetalert2": "^11.1.7",
-        "tinymce": "^5.9.2",
+        "tinymce": "^7.2.1",
         "toastr": "^2.1.4"
     }
 }

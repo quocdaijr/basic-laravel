@@ -6,7 +6,7 @@
             @else border-indigo-300 focus:border-indigo-300 focus:ring-indigo-200 dark:border-gray-600 @enderror"
     >
         @if($options['includeNullOption'] ?? true)
-            <option value="">Không</option>
+            <option value=""></option>
         @endif
         @foreach($options['selectOptions'] as $key => $value)
             <option value="{{$key}}" {{$key == old($name, $oldValue) ? 'selected' : ''}}>{{$value}}</option>

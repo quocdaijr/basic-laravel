@@ -190,7 +190,7 @@
                             </div>
                         </div>
                     </div>
-                    <div x-show="!isHasFile()">Không có file</div>
+                    <div x-show="!isHasFile()">No File</div>
                 </div>
                 <div class="flex justify-between pt-8">
                     <div

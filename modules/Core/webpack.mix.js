@@ -31,8 +31,8 @@ mix.copyDirectory('node_modules/tinymce/icons', assetsNodeModuleDist + 'tinymce/
 mix.copyDirectory('node_modules/tinymce/plugins', assetsNodeModuleDist + 'tinymce/plugins');
 mix.copyDirectory('node_modules/tinymce/skins', assetsNodeModuleDist + 'tinymce/skins');
 mix.copyDirectory('node_modules/tinymce/themes', assetsNodeModuleDist + 'tinymce/themes');
-mix.copy('node_modules/tinymce/jquery.tinymce.js', assetsNodeModuleDist + 'tinymce/jquery.tinymce.js');
-mix.copy('node_modules/tinymce/jquery.tinymce.min.js', assetsNodeModuleDist + 'tinymce/jquery.tinymce.min.js');
+// mix.copy('node_modules/tinymce/jquery.tinymce.js', assetsNodeModuleDist + 'tinymce/jquery.tinymce.js');
+// mix.copy('node_modules/tinymce/jquery.tinymce.min.js', assetsNodeModuleDist + 'tinymce/jquery.tinymce.min.js');
 mix.copy('node_modules/tinymce/tinymce.js', assetsNodeModuleDist + 'tinymce/tinymce.js');
 mix.copy('node_modules/tinymce/tinymce.min.js', assetsNodeModuleDist + 'tinymce/tinymce.min.js');
 
