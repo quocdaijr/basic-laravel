@@ -4,8 +4,9 @@ services:
         image: nginx:alpine
         container_name: lar_nginx
         volumes:
-            - '.:/var/www/html/basic-laravel'
+            - '.:/var/www/html/cmsqdjr'
             - './docker/nginx/conf.d:/etc/nginx/conf.d'
+            - './docker/nginx/logs:/var/log/nginx'
         expose:
             - 80
             - 443
@@ -15,11 +16,11 @@ services:
         network_mode: "host"
 
     lar_php80:
-        image: quocdaijr/php80-fpm:8.0
+        image: quocdaijr/php-fpm:8.0
         container_name: lar_php80
-        working_dir: /var/www/html/basic-laravel
+        working_dir: /var/www/html/cmsqdjr
         volumes:
-            - '.:/var/www/html/basic-laravel'
+            - '.:/var/www/html/cmsqdjr'
             - './docker/php80/supervisor/conf.d:/etc/supervisor/conf.d'
             - './docker/php80/supervisor/logs:/var/log/cache'
             - './docker/php80/php-fpm/conf.d/php-ini-overrides.ini:/etc/php/8.0/fpm/conf.d/99-overrides.ini'
@@ -30,21 +31,21 @@ services:
             - 4.4.4.4
         network_mode: "host"
 
-    lar_rabbitmq:
-        image: quocdaijr/rabbitmq:3.8.19
-        container_name: lar_rabbitmq
-        volumes:
-            - './docker/rabbitmq/logs:/var/log/rabbitmq/log'
-        environment:
-            RABBITMQ_DEFAULT_USER: admin
-            RABBITMQ_DEFAULT_PASS: 12345@
-        expose:
-            - 15672
-            - 5672
-        dns:
-            - 8.8.8.8
-            - 4.4.4.4
-        network_mode: "host"
+#    lar_rabbitmq:
+#        image: quocdaijr/rabbitmq:3.8.19
+#        container_name: lar_rabbitmq
+#        volumes:
+#            - './docker/rabbitmq/logs:/var/log/rabbitmq/log'
+#        environment:
+#            RABBITMQ_DEFAULT_USER: admin
+#            RABBITMQ_DEFAULT_PASS: 12345@
+#        expose:
+#            - 15672
+#            - 5672
+#        dns:
+#            - 8.8.8.8
+#            - 4.4.4.4
+#        network_mode: "host"
 
     lar_mysql:
         image: quocdaijr/msql:8.0
@@ -53,7 +54,7 @@ services:
             - './docker/mysql/data:/var/lib/mysql'
         environment:
             - MYSQL_ROOT_PASSWORD=12345@
-            - MYSQL_DATABASE=basic-laravel
+            - MYSQL_DATABASE=cmsqdjr
             - MYSQL_USER=basic-user
             - MYSQL_PASSWORD=basic-password
         expose:
@@ -63,30 +64,30 @@ services:
             - 4.4.4.4
         network_mode: "host"
 
-    lar_elasticsearch7:
-        image: quocdaijr/elasticsearch7:7.12.1
-        container_name: lar_elasticsearch7
-        volumes:
-            - ./docker/elasticsearch7/data:/usr/share/elasticsearch/data
-        environment:
-            - discovery.type=single-node
-        #      - ELASTICSEARCH_HEAP_SIZE=1g
-        expose:
-            - 9200
-            - 9300
-        dns:
-            - 8.8.8.8
-            - 4.4.4.4
-        network_mode: "host"
+#    lar_elasticsearch7:
+#        image: quocdaijr/elasticsearch:7.12.1
+#        container_name: lar_elasticsearch7
+#        volumes:
+#            - ./docker/elasticsearch7/data:/usr/share/elasticsearch/data
+#        environment:
+#            - discovery.type=single-node
+#        #      - ELASTICSEARCH_HEAP_SIZE=1g
+#        expose:
+#            - 9200
+#            - 9300
+#        dns:
+#            - 8.8.8.8
+#            - 4.4.4.4
+#        network_mode: "host"
 
-    lar_redis:
-        image: redis:latest
-        container_name: lar_redis
-        volumes:
-            - './docker/redis/data:/data'
-        expose:
-            - 6379
-        dns:
-            - 8.8.8.8
-            - 4.4.4.4
-        network_mode: "host"
+#    lar_redis:
+#        image: redis:latest
+#        container_name: lar_redis
+#        volumes:
+#            - './docker/redis/data:/data'
+#        expose:
+#            - 6379
+#        dns:
+#            - 8.8.8.8
+#            - 4.4.4.4
+#        network_mode: "host"

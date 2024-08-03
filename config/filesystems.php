@@ -41,11 +41,11 @@ return [
             'root' => storage_path('app/public'),
             'url' => !empty(env('APP_ST_URL')) ? env('APP_ST_URL') : env('APP_URL') . '/storage',
             'visibility' => 'public',
-            'cache' => [
-                'store' => 'redis',
-                'expire' => 600,
-                'prefix' => 'storage_cache',
-            ],
+//            'cache' => [
+//                'store' => 'redis',
+//                'expire' => 600,
+//                'prefix' => 'storage_cache',
+//            ],
         ],
 
         's3' => [
